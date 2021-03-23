@@ -1,44 +1,46 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Tardis Core Package Documentation &mdash; TARDIS v</title>
+  <title>TARDIS Core Package Documentation &mdash; TARDIS v3.0.dev1</title>
   
-
-  
-  
-    <link rel="shortcut icon" href="_static/tardis_logo.ico"/>
-  
-  
-  
-
-  
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/tardis_logo.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Installation" href="installation.html" />
@@ -66,6 +68,10 @@
           
             
             
+              <div class="version">
+                3.0.dev1
+              </div>
+            
           
 
           
@@ -80,6 +86,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -89,17 +96,19 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart/quickstart.html">Quickstart for TARDIS</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Using TARDIS</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="running/index.html">Running TARDIS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using/components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using/visualization/index.html">Visualization Tools &amp; Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using/interaction/index.html">Additional Interactivity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using/parallelisation/index.html">Parallel execution with Numba and OpenMP</a></li>
 </ul>
 <p class="caption"><span class="caption-text">The Physics of TARDIS</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="physics/index.html">Physics overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="physics/plasma/index.html">Overview of plasma calculations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="physics/montecarlo/index.html">Monte Carlo Primer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="physics/plasma/index.html">Plasma</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Research with TARDIS</span></p>
 <ul>
@@ -107,13 +116,16 @@
 </ul>
 <p class="caption"><span class="caption-text">Team &amp; Credits</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="team.html">Team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="credits.html">Credits &amp; Publication Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CODE_OF_CONDUCT.html">Code of Conduct</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Developers Guide</span></p>
+<p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contribution Guidelines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development/index.html">Developer Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development Roadmap</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API</span></p>
 <ul>
@@ -127,6 +139,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -161,18 +174,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Tardis Core Package Documentation</li>
+      <li>TARDIS Core Package Documentation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -191,13 +206,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -211,18 +226,28 @@
 }
 </style>
 <div class="section" id="tardis-core-package-documentation">
-<h1>Tardis Core Package Documentation<a class="headerlink" href="#tardis-core-package-documentation" title="Permalink to this headline">¶</a></h1>
+<h1>TARDIS Core Package Documentation<a class="headerlink" href="#tardis-core-package-documentation" title="Permalink to this headline">¶</a></h1>
 <img alt="_images/tardis_banner.svg" src="_images/tardis_banner.svg" /><p>TARDIS is an open-source Monte Carlo radiative-transfer spectral synthesis code
 for 1D models of supernova ejecta. It is designed for rapid spectral modelling
-of supernovae. It is developed and maintained by a <a class="reference internal" href="team.html#team"><span class="std std-ref">multi-disciplinary team</span></a>
+of supernovae. It is developed and maintained by a <a class="reference internal" href="team_and_governance/team.html#team"><span class="std std-ref">multi-disciplinary team</span></a>
 including software engineers, computer scientists, statisticians,
 and astrophysicists.</p>
 <p>If you use this code for any publications or presentations please follow our
-citation guidelines in <a class="reference internal" href="credits.html#tardiscredits"><span class="std std-ref">Credits &amp; Publication Policies</span></a></p>
+citation guidelines in <a class="reference internal" href="credits.html#tardiscredits"><span class="std std-ref">Credits &amp; Publication Policies</span></a>.</p>
 <p>User modifications and additions that lead to publications <strong>need to be handed
 back to the community</strong> by incorporating them into TARDIS.
-Please contact the TARDIS team via the <a class="reference external" href="https://github.com/tardis-sn/tardis">github page</a> if you have questions or need
+Please contact the TARDIS team via the <a class="reference external" href="https://github.com/tardis-sn/tardis">GitHub page</a> if you have questions or need
 assistance.</p>
+<div class="section" id="mission-statement">
+<h2>Mission Statement<a class="headerlink" href="#mission-statement" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p><em>The mission of the TARDIS community is to develop open-source software
+instruments to analyze and simulate astronomical transients
+(supernovae, kilonovae, etc.) for research and education purposes.
+We aim to build up a diverse group of researchers and developers
+using an open-community model that emphasizes interdisciplinary
+research and science reproducibility.</em></p>
+</div></blockquote>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -240,20 +265,21 @@ assistance.</p>
 <div class="toctree-wrapper compound">
 </div>
 <div class="section" id="news">
-<h2>News<a class="headerlink" href="#news" title="Permalink to this headline">¶</a></h2>
+<h3>News<a class="headerlink" href="#news" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="gsoc-2017">
-<h3>GSOC 2017<a class="headerlink" href="#gsoc-2017" title="Permalink to this headline">¶</a></h3>
+<h4>GSOC 2017<a class="headerlink" href="#gsoc-2017" title="Permalink to this headline">¶</a></h4>
 <a class="reference external image-reference" href="https://summerofcode.withgoogle.com/organizations/4793296782098432/"><img alt="https://developers.google.com/open-source/gsoc/resources/downloads/GSoC-logo-horizontal.svg" src="https://developers.google.com/open-source/gsoc/resources/downloads/GSoC-logo-horizontal.svg" width="458px" /></a>
 <p>TARDIS participates in the Google Summer of Code 2017 program as part of the Python Software Foundation!</p>
 </div>
 <div class="section" id="socis-2016">
-<h3>SOCIS 2016<a class="headerlink" href="#socis-2016" title="Permalink to this headline">¶</a></h3>
+<h4>SOCIS 2016<a class="headerlink" href="#socis-2016" title="Permalink to this headline">¶</a></h4>
 <p>TARDIS is part of ESA’s Summer of Code in Space 2016 program!</p>
 </div>
 <div class="section" id="gsoc-2016">
-<h3>GSOC 2016<a class="headerlink" href="#gsoc-2016" title="Permalink to this headline">¶</a></h3>
+<h4>GSOC 2016<a class="headerlink" href="#gsoc-2016" title="Permalink to this headline">¶</a></h4>
 <a class="reference external image-reference" href="https://summerofcode.withgoogle.com/organizations/4793296782098432/"><img alt="https://developers.google.com/open-source/gsoc/resources/downloads/GSoC-logo-horizontal.svg" src="https://developers.google.com/open-source/gsoc/resources/downloads/GSoC-logo-horizontal.svg" width="458px" /></a>
 <p>TARDIS has been selected as a mentoring organisation for the Google Summer of Code 2016 program!</p>
+</div>
 </div>
 </div>
 </div>
@@ -263,27 +289,28 @@ assistance.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2013, TARDIS collaboration
+        &#169; Copyright 2013-2021, TARDIS collaboration.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -291,7 +318,6 @@ assistance.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

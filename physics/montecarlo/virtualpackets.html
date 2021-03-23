@@ -1,44 +1,48 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Spectrum Generation with Virtual Packets &mdash; TARDIS v</title>
+  <title>Spectrum Generation with Virtual Packets &mdash; TARDIS v3.0.dev1</title>
   
-
-  
-  
-    <link rel="shortcut icon" href="../../_static/tardis_logo.ico"/>
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/tardis_logo.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Direct integration of the radiation field" href="sourceintegration.html" />
@@ -67,6 +71,10 @@
           
             
             
+              <div class="version">
+                3.0.dev1
+              </div>
+            
           
 
           
@@ -81,6 +89,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -90,37 +99,20 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../quickstart/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/quickstart.html">Quickstart for TARDIS</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Using TARDIS</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../running/index.html">Running TARDIS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../using/components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../using/visualization/index.html">Visualization Tools &amp; Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../using/interaction/index.html">Additional Interactivity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../using/parallelisation/index.html">Parallel execution with Numba and OpenMP</a></li>
 </ul>
 <p class="caption"><span class="caption-text">The Physics of TARDIS</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Physics overview</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../new_plasma.html">Plasma</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">Monte Carlo Primer</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="basicprinciples.html">Monte Carlo Radiative Transfer - Basic Principles</a></li>
-<li class="toctree-l3"><a class="reference internal" href="discretization.html">Monte Carlo Discretization - Energy Packets</a></li>
-<li class="toctree-l3"><a class="reference internal" href="propagation.html">Packet Propagation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lineinteraction.html">Line Interaction Treatments</a></li>
-<li class="toctree-l3"><a class="reference internal" href="estimators.html">Volume-based Monte Carlo Estimators</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Spectrum Generation with Virtual Packets</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id4">Virtual Packets</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="sourceintegration.html">Direct integration of the radiation field</a></li>
-<li class="toctree-l3"><a class="reference internal" href="randomsampling.html">Random Sampling Basics</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../index.html#old-physics-section-of-the-tardis-docu-outdated">Old Physics Section of the TARDIS Docu (Outdated)</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../plasma/index.html">Overview of plasma calculations</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Monte Carlo Primer</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="basicprinciples.html">Monte Carlo Radiative Transfer - Basic Principles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="discretization.html">Monte Carlo Discretization - Energy Packets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discretization.html">Monte Carlo Discretization — Energy Packets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="propagation.html">Packet Propagation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lineinteraction.html">Line Interaction Treatments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="estimators.html">Volume-based Monte Carlo Estimators</a></li>
@@ -136,6 +128,7 @@
 <li class="toctree-l2"><a class="reference internal" href="randomsampling.html">Random Sampling Basics</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../plasma/index.html">Plasma</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Research with TARDIS</span></p>
 <ul>
@@ -143,13 +136,16 @@
 </ul>
 <p class="caption"><span class="caption-text">Team &amp; Credits</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../team.html">Team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../credits.html">Credits &amp; Publication Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Developers Guide</span></p>
+<p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contribution Guidelines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../development/index.html">Developer Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CHANGELOG.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Development Roadmap</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API</span></p>
 <ul>
@@ -163,6 +159,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -197,13 +194,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../index.html">Physics of TARDIS</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="index.html">Monte Carlo Primer</a> &raquo;</li>
         
@@ -212,7 +209,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../_sources/physics/montecarlo/virtualpackets.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -231,13 +228,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -257,7 +254,7 @@ two methods are implemented to calculate the spectrum during the main Monte
 Carlo calculation. One follows the obvious approach of recording the properties
 of all escaping Monte Carlo packets and binning their contributions in
 frequency (or wavelength) space. This “real packet” spectrum will naturally
-suffer from Monte Carlo noise and if one tries to improve its signal-to-noise
+suffer from Monte Carlo noise, and if one tries to improve its signal-to-noise
 ratio, one immediately encounters a fundamental characteristic of Monte Carlo
 approaches. Since Monte Carlo processes are typically governed by Poisson
 statistics, the level of stochastic fluctuations decreases only as <span class="math notranslate nohighlight">\(\propto
@@ -299,7 +296,7 @@ optical depth. In particular, it contributes with the</p>
 <p>to the emergent luminosity in the frequency interval <span class="math notranslate nohighlight">\([\nu, \nu + \Delta
 \nu]\)</span>. Here, <span class="math notranslate nohighlight">\(\Delta t\)</span> denotes the physical duration of the simulation
 step (the same duration which is used during the initialization process at the
-photosphere, see <a class="reference internal" href="propagation.html"><span class="doc">Propagation</span></a>) and <span class="math notranslate nohighlight">\(\varepsilon\)</span> is
+photosphere, see <a class="reference internal" href="propagation.html"><span class="doc">Propagation</span></a>), and <span class="math notranslate nohighlight">\(\varepsilon\)</span> is
 the energy of the virtual packet when it was generated.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -309,7 +306,7 @@ at the photosphere.</p>
 </div>
 <p>The initialization process for virtual packets is slightly different from real
 ones. For example, whenever a real packet is emitted by the photosphere,
-<span class="math notranslate nohighlight">\(N_v\)</span> virtual packets are spawned as well. The propagation direction of
+<span class="math notranslate nohighlight">\(N_v\)</span> virtual packets are spawned, as well. The propagation direction of
 these virtual packets is assigned uniformly. However, since <span class="math notranslate nohighlight">\(N_v\)</span> is
 typically small, an unequal sampling of the solid angle is avoided by selecting
 <span class="math notranslate nohighlight">\(N_v\)</span> equal <span class="math notranslate nohighlight">\(\mu\)</span> bins and sampling the direction uniformly within
@@ -341,11 +338,11 @@ problem :</p>
 <div class="math notranslate nohighlight">
 \[I(R, \mu, \nu) = I(R_{\mathrm{phot}}, \mu, \nu) \exp(-\tau(s_0)) +
 \int_0^{s_0} \eta(R - \mu s, \mu, \nu) \exp(-\tau(s)) \mathrm{d}s\]</div>
-<p>This formulation of the formal solution is valid for the SN ejecta problem and
+<p>This formulation of the formal solution is valid for the supernova ejecta problem and
 involves the location of the photosphere, the radius of the ejecta surface
 <span class="math notranslate nohighlight">\(R\)</span> and the packet trajectory <span class="math notranslate nohighlight">\(s\)</span>. Here, the optical depth
-<span class="math notranslate nohighlight">\(\tau(s)\)</span> measures the optical depth from <span class="math notranslate nohighlight">\(s\)</span> to the ejecta surface
-For more details see <span class="xref std std-doc">Radiative Transfer Primer</span>.</p>
+<span class="math notranslate nohighlight">\(\tau(s)\)</span> measures the optical depth from <span class="math notranslate nohighlight">\(s\)</span> to the ejecta surface.
+For more details see <a class="reference internal" href="basicprinciples.html#montecarlo-basics"><span class="std std-ref">Monte Carlo Radiative Transfer - Basic Principles</span></a>.</p>
 <p>Essentially, the virtual packets solve this formal solution equation along a
 large number of directional rays. In particular, the virtual packets spawned at
 the photosphere solve the first part of the formal solution, namely by
@@ -370,29 +367,29 @@ entire propagation path more expensive.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="sourceintegration.html" class="btn btn-neutral float-right" title="Direct integration of the radiation field" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="estimators.html" class="btn btn-neutral float-left" title="Volume-based Monte Carlo Estimators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="sourceintegration.html" class="btn btn-neutral float-right" title="Direct integration of the radiation field" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="estimators.html" class="btn btn-neutral float-left" title="Volume-based Monte Carlo Estimators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2013, TARDIS collaboration
+        &#169; Copyright 2013-2021, TARDIS collaboration.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -400,7 +397,6 @@ entire propagation path more expensive.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
