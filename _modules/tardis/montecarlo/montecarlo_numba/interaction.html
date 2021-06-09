@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tardis.montecarlo.montecarlo_numba.interaction &mdash; TARDIS v3.0.dev3991</title>
+  <title>tardis.montecarlo.montecarlo_numba.interaction &mdash; TARDIS v3.0.dev3992</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                3.0.dev3991
+                3.0.dev3992
               </div>
             
           
@@ -219,7 +219,6 @@
     <span class="n">angle_aberration_CMF_to_LF</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">tardis.montecarlo.montecarlo_numba.r_packet</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">test_for_close_line</span><span class="p">,</span>
     <span class="n">InteractionType</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">tardis.montecarlo.montecarlo_numba.utils</span> <span class="kn">import</span> <span class="n">get_random_mu</span>
@@ -318,10 +317,6 @@
     <span class="n">r_packet</span><span class="o">.</span><span class="n">next_line_id</span> <span class="o">=</span> <span class="n">emission_line_id</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">nu_line</span> <span class="o">=</span> <span class="n">numba_plasma</span><span class="o">.</span><span class="n">line_list_nu</span><span class="p">[</span><span class="n">emission_line_id</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">emission_line_id</span> <span class="o">!=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">numba_plasma</span><span class="o">.</span><span class="n">line_list_nu</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">test_for_close_line</span><span class="p">(</span>
-            <span class="n">r_packet</span><span class="p">,</span> <span class="n">emission_line_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nu_line</span><span class="p">,</span> <span class="n">numba_plasma</span>
-        <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">montecarlo_configuration</span><span class="o">.</span><span class="n">full_relativity</span><span class="p">:</span>
         <span class="n">r_packet</span><span class="o">.</span><span class="n">mu</span> <span class="o">=</span> <span class="n">angle_aberration_CMF_to_LF</span><span class="p">(</span>

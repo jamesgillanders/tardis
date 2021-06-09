@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tardis.montecarlo.montecarlo_numba.base &mdash; TARDIS v3.0.dev3991</title>
+  <title>tardis.montecarlo.montecarlo_numba.base &mdash; TARDIS v3.0.dev3992</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                3.0.dev3991
+                3.0.dev3992
               </div>
             
           
@@ -357,7 +357,6 @@
     <span class="n">virt_packet_last_line_interaction_in_id</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">virt_packet_last_line_interaction_out_id</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running post-merge numba montecarlo (with C close lines)!&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output_nus</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">montecarlo_configuration</span><span class="o">.</span><span class="n">single_packet_seed</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
             <span class="n">seed</span> <span class="o">=</span> <span class="n">packet_seeds</span><span class="p">[</span><span class="n">montecarlo_configuration</span><span class="o">.</span><span class="n">single_packet_seed</span><span class="p">]</span>
@@ -372,7 +371,6 @@
             <span class="n">packet_collection</span><span class="o">.</span><span class="n">packets_input_energy</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
             <span class="n">seed</span><span class="p">,</span>
             <span class="n">i</span><span class="p">,</span>
-            <span class="mi">0</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">vpacket_collection</span> <span class="o">=</span> <span class="n">VPacketCollection</span><span class="p">(</span>
             <span class="n">r_packet</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
@@ -408,7 +406,7 @@
         <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
         <span class="c1"># if we&#39;re only in a single-packet mode</span>
         <span class="c1"># if montecarlo_configuration.single_packet_seed == -1:</span>
-        <span class="c1">#     break</span>
+        <span class="c1">#    break</span>
         <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">v_packets_idx</span><span class="p">):</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">vpackets_nu</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">spectrum_frequency</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="p">(</span>
                 <span class="n">vpackets_nu</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">spectrum_frequency</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>

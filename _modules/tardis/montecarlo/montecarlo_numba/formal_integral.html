@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tardis.montecarlo.montecarlo_numba.formal_integral &mdash; TARDIS v3.0.dev3991</title>
+  <title>tardis.montecarlo.montecarlo_numba.formal_integral &mdash; TARDIS v3.0.dev3992</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                3.0.dev3991
+                3.0.dev3992
               </div>
             
           
@@ -315,7 +315,7 @@
                     <span class="n">nu_ends</span><span class="p">,</span> 
                     <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span>
             <span class="p">)</span>
-            <span class="c1"># loop over all interactions</span>
+            <span class="c1"># loop over all interactions </span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size_z</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="n">escat_op</span> <span class="o">=</span> <span class="n">electron_density</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">shell_id</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span> <span class="o">*</span> <span class="n">SIGMA_THOMSON</span>
                 <span class="n">nu_end</span> <span class="o">=</span> <span class="n">nu_ends</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -442,7 +442,7 @@
 
 <span class="sd">        The function returns False if the configuration conflicts with the</span>
 <span class="sd">        required settings. If raises evaluates to True, then a</span>
-<span class="sd">        IntegrationError is raised instead</span>
+<span class="sd">        IntegrationError is raised instead </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">raise_or_return</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
