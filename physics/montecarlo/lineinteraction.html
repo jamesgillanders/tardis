@@ -7,12 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Line Interaction Treatments &mdash; TARDIS v3.0.dev1</title>
+  <title>Line Interaction Treatments &mdash; TARDIS v3.0.dev3991</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
 
@@ -33,12 +35,13 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -73,7 +76,7 @@
             
             
               <div class="version">
-                3.0.dev1
+                3.0.dev3991
               </div>
             
           
@@ -139,6 +142,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../credits.html">Credits &amp; Publication Policies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sponsors.html">Sponsors</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul>
@@ -248,7 +252,7 @@
 }
 </style>
 <div class="section" id="line-interaction-treatments">
-<h1>Line Interaction Treatments<a class="headerlink" href="#line-interaction-treatments" title="Permalink to this headline">¶</a></h1>
+<span id="lineinteraction"></span><h1>Line Interaction Treatments<a class="headerlink" href="#line-interaction-treatments" title="Permalink to this headline">¶</a></h1>
 <p>TARDIS currently offers different ways to handle line interactions, which may be
 activated via the YAML configuration file. Independently of the chosen
 treatment, a number of steps are always carried out when a Monte Carlo packet
@@ -289,20 +293,20 @@ frame, the post-interaction frequency is given by</p>
 </div>
 <div class="section" id="downbranching">
 <h2>Downbranching<a class="headerlink" href="#downbranching" title="Permalink to this headline">¶</a></h2>
-<p>The so-called downbranching scheme, introduced by <a class="bibtex reference internal" href="../../zreferences.html#lucy1999a" id="id1">[Lucy99b]</a>, is an
+<p>The so-called downbranching scheme, introduced by <span id="id1">[<a class="reference internal" href="../../zreferences.html#id25" title="L. B. Lucy. Improved Monte Carlo techniques for the spectral synthesis of supernovae. Astronomy and Astrophysics, 345:211-220, May 1999.">Lucy99b</a>]</span>, is an
 elegant approach to approximately account for fluorescence effects. In this
 scheme, the packet is not re-emitted in the same transitions as it was absorbed
 in. Instead, it now can emerge from any line transition linking the activated
 upper energy level to a lower one. For any specific line interaction event, the
 re-emission channel is probabilistically selected according to the branching
 ratios of the different allowed de-excitation transitions. For more details
-about the downbranching scheme, we refer to <a class="bibtex reference internal" href="../../zreferences.html#lucy1999a" id="id2">[Lucy99b]</a> and
-<a class="bibtex reference internal" href="../../zreferences.html#kerzendorf2014" id="id3">[KerzendorfSim14]</a>.</p>
+about the downbranching scheme, we refer to <span id="id2">[<a class="reference internal" href="../../zreferences.html#id25" title="L. B. Lucy. Improved Monte Carlo techniques for the spectral synthesis of supernovae. Astronomy and Astrophysics, 345:211-220, May 1999.">Lucy99b</a>]</span> and
+<span id="id3">[<a class="reference internal" href="../../zreferences.html#id19" title="W. E. Kerzendorf and S. A. Sim. A spectral synthesis code for rapid modelling of supernovae. Monthly Notices of the RAS, 440:387-404, May 2014. arXiv:1401.5469, doi:10.1093/mnras/stu055.">KerzendorfSim14</a>]</span>.</p>
 </div>
 <div class="section" id="macro-atom-scheme">
 <h2>Macro Atom Scheme<a class="headerlink" href="#macro-atom-scheme" title="Permalink to this headline">¶</a></h2>
 <p>Finally, as the most sophisticated line interaction treatment, a simplified
-version of the Macro Atom scheme of <a class="bibtex reference internal" href="../../zreferences.html#lucy2002" id="id4">[Lucy02]</a> and <a class="bibtex reference internal" href="../../zreferences.html#lucy2003" id="id5">[Lucy03]</a> is
+version of the Macro Atom scheme of <span id="id4">[<a class="reference internal" href="../../zreferences.html#id23" title="L. B. Lucy. Monte Carlo transition probabilities. Astronomy and Astrophysics, 384:725-735, March 2002. arXiv:arXiv:astro-ph/0107377, doi:10.1051/0004-6361:20011756.">Lucy02</a>]</span> and <span id="id5">[<a class="reference internal" href="../../zreferences.html#id22" title="L. B. Lucy. Monte Carlo transition probabilities. II. Astronomy and Astrophysics, 403:261-275, May 2003. arXiv:arXiv:astro-ph/0303202, doi:10.1051/0004-6361:20030357.">Lucy03</a>]</span> is
 implemented in TARDIS. This approach provides a more accurate representation of
 fluorescence processes and multi-line effects. Once a Monte Carlo packet is
 absorbed in a certain line transition (macro atom activation), an arbitrary
@@ -315,13 +319,13 @@ involved processes are governed by probabilities reflecting the different line
 transition strengths, radiative emission and absorption processes. More details
 about the implementation of the Macro Atom scheme in TARDIS is provided
 <a class="reference internal" href="../plasma/macroatom.html#macroatom"><span class="std std-ref">here</span></a>. For more background information and
-an in-depth derivation of the scheme, we refer to <a class="bibtex reference internal" href="../../zreferences.html#lucy2002" id="id6">[Lucy02]</a> and
-<a class="bibtex reference internal" href="../../zreferences.html#lucy2003" id="id7">[Lucy03]</a>.</p>
+an in-depth derivation of the scheme, we refer to <span id="id6">[<a class="reference internal" href="../../zreferences.html#id23" title="L. B. Lucy. Monte Carlo transition probabilities. Astronomy and Astrophysics, 384:725-735, March 2002. arXiv:arXiv:astro-ph/0107377, doi:10.1051/0004-6361:20011756.">Lucy02</a>]</span> and
+<span id="id7">[<a class="reference internal" href="../../zreferences.html#id22" title="L. B. Lucy. Monte Carlo transition probabilities. II. Astronomy and Astrophysics, 403:261-275, May 2003. arXiv:arXiv:astro-ph/0303202, doi:10.1051/0004-6361:20030357.">Lucy03</a>]</span>.</p>
 </div>
 <div class="section" id="comparison">
 <h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h2>
 <p>The different levels of sophistication are illustrated in the following plot,
-taken from <a class="bibtex reference internal" href="../../zreferences.html#kerzendorf2014" id="id8">[KerzendorfSim14]</a> and showing the incident wavelength versus the
+taken from <span id="id8">[<a class="reference internal" href="../../zreferences.html#id19" title="W. E. Kerzendorf and S. A. Sim. A spectral synthesis code for rapid modelling of supernovae. Monthly Notices of the RAS, 440:387-404, May 2014. arXiv:1401.5469, doi:10.1093/mnras/stu055.">KerzendorfSim14</a>]</span> and showing the incident wavelength versus the
 emergent wavelength of Monte Carlo packets in line interactions. The left panel
 shows the situation in the resonant scatter mode, the middle one for the
 downbranching scheme and the right one the macro atom results.</p>

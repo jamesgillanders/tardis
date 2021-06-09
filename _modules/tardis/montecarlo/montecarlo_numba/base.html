@@ -7,12 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tardis.montecarlo.montecarlo_numba.base &mdash; TARDIS v3.0.dev1</title>
+  <title>tardis.montecarlo.montecarlo_numba.base &mdash; TARDIS v3.0.dev3991</title>
   
 
   
   <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
   <link rel="stylesheet" href="../../../../_static/plot_directive.css" type="text/css" />
 
@@ -33,6 +35,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
@@ -69,7 +72,7 @@
             
             
               <div class="version">
-                3.0.dev1
+                3.0.dev3991
               </div>
             
           
@@ -119,6 +122,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../credits.html">Credits &amp; Publication Policies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sponsors.html">Sponsors</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul>
@@ -207,8 +211,9 @@
 <span class="kn">from</span> <span class="nn">tardis.montecarlo.montecarlo_numba.r_packet</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">RPacket</span><span class="p">,</span>
     <span class="n">PacketStatus</span><span class="p">,</span>
-    <span class="n">MonteCarloException</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">tardis.montecarlo.montecarlo_numba.utils</span> <span class="kn">import</span> <span class="n">MonteCarloException</span>
+
 <span class="kn">from</span> <span class="nn">tardis.montecarlo.montecarlo_numba.numba_interface</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">PacketCollection</span><span class="p">,</span>
     <span class="n">VPacketCollection</span><span class="p">,</span>
@@ -230,6 +235,7 @@
 
 <div class="viewcode-block" id="montecarlo_radial1d"><a class="viewcode-back" href="../../../../api/tardis.montecarlo.montecarlo_numba.base.html#tardis.montecarlo.montecarlo_numba.base.montecarlo_radial1d">[docs]</a><span class="k">def</span> <span class="nf">montecarlo_radial1d</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">plasma</span><span class="p">,</span> <span class="n">runner</span><span class="p">):</span>
     <span class="n">packet_collection</span> <span class="o">=</span> <span class="n">PacketCollection</span><span class="p">(</span>
+        <span class="n">runner</span><span class="o">.</span><span class="n">input_r</span><span class="p">,</span>
         <span class="n">runner</span><span class="o">.</span><span class="n">input_nu</span><span class="p">,</span>
         <span class="n">runner</span><span class="o">.</span><span class="n">input_mu</span><span class="p">,</span>
         <span class="n">runner</span><span class="o">.</span><span class="n">input_energy</span><span class="p">,</span>

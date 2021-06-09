@@ -7,12 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Configuration File &mdash; TARDIS v3.0.dev1</title>
+  <title>Configuration File &mdash; TARDIS v3.0.dev3991</title>
   
 
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/plot_directive.css" type="text/css" />
 
@@ -33,12 +35,13 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
@@ -73,7 +76,7 @@
             
             
               <div class="version">
-                3.0.dev1
+                3.0.dev3991
               </div>
             
           
@@ -136,6 +139,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../credits.html">Credits &amp; Publication Policies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sponsors.html">Sponsors</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul>
@@ -270,14 +274,42 @@ are allowed or available.</p>
 <li><p><a class="reference internal" href="#configuration-schema" id="id1">Configuration Schema</a></p>
 <ul>
 <li><p><a class="reference internal" href="#supernova" id="id2">Supernova</a></p></li>
-<li><p><a class="reference internal" href="#model" id="id3">Model</a></p></li>
-<li><p><a class="reference internal" href="#plasma" id="id4">Plasma</a></p>
+<li><p><a class="reference internal" href="#model" id="id3">Model</a></p>
 <ul>
-<li><p><a class="reference internal" href="#nlte" id="id5">NLTE</a></p></li>
+<li><p><a class="reference internal" href="#abundances" id="id4">Abundances</a></p>
+<ul>
+<li><p><a class="reference internal" href="#file-abundance" id="id5">File Abundance</a></p></li>
+<li><p><a class="reference internal" href="#uniform-abundance" id="id6">Uniform Abundance</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#monte-carlo" id="id6">Monte Carlo</a></p></li>
-<li><p><a class="reference internal" href="#spectrum" id="id7">Spectrum</a></p></li>
+<li><p><a class="reference internal" href="#structure" id="id7">Structure</a></p>
+<ul>
+<li><p><a class="reference internal" href="#file-structure" id="id8">File Structure</a></p></li>
+<li><p><a class="reference internal" href="#specific-structure" id="id9">Specific Structure</a></p></li>
+<li><p><a class="reference internal" href="#densities" id="id10">Densities</a></p>
+<ul>
+<li><p><a class="reference internal" href="#branch85-w7-density" id="id11">Branch85_w7 Density</a></p></li>
+<li><p><a class="reference internal" href="#exponential-density" id="id12">Exponential Density</a></p></li>
+<li><p><a class="reference internal" href="#power-law-density" id="id13">Power_law Density</a></p></li>
+<li><p><a class="reference internal" href="#uniform-density" id="id14">Uniform Density</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#plasma" id="id15">Plasma</a></p>
+<ul>
+<li><p><a class="reference internal" href="#nlte" id="id16">NLTE</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#monte-carlo" id="id17">Monte Carlo</a></p>
+<ul>
+<li><p><a class="reference internal" href="#damped-convergence-strategy" id="id18">Damped Convergence Strategy</a></p></li>
+<li><p><a class="reference internal" href="#custom-convergence-strategy" id="id19">Custom Convergence Strategy</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#spectrum" id="id20">Spectrum</a></p></li>
 </ul>
 </li>
 </ul>
@@ -465,54 +497,27 @@ file type where the information is stored or a number of other sections.</p>
 </ul>
 </td>
 <td rowspan="2"><p>oneOf</p></td>
-<td><p><span class="xref std std-ref">#/definitions/structure/file</span></p></td>
+<td><p><a class="reference internal" href="#specific-structure"><span class="std std-ref">Specific Structure</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><span class="xref std std-ref">#/definitions/structure/specific</span></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#file-structure"><span class="std std-ref">File Structure</span></a></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>abundances</p></li>
 </ul>
 </td>
 <td rowspan="2"><p>oneOf</p></td>
-<td><p><span class="xref std std-ref">#/definitions/abundances/file</span></p></td>
+<td><p><a class="reference internal" href="#file-abundance"><span class="std std-ref">File Abundance</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><span class="xref std std-ref">#/definitions/abundances/uniform</span></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniform-abundance"><span class="std std-ref">Uniform Abundance</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>definitions</p></td>
-</tr>
-<tr class="row-odd"><td colspan="3"><ul class="simple">
-<li><p>density</p></li>
-</ul>
-</td>
-</tr>
-<tr class="row-even"><td colspan="3"><ul class="simple">
-<li><p>structure</p></li>
-</ul>
-</td>
-</tr>
-<tr class="row-odd"><td colspan="3"><ul class="simple">
-<li><p>abundances</p></li>
-</ul>
-</td>
-</tr>
 </tbody>
 </table>
-<p>All types of <code class="docutils literal notranslate"><span class="pre">structure</span></code> definitions have two keywords in common: <code class="docutils literal notranslate"><span class="pre">v_inner_boundary</span></code> and <code class="docutils literal notranslate"><span class="pre">v_outer_boundary</span></code>.
-In the <code class="docutils literal notranslate"><span class="pre">structure</span></code> section, one can specify a <code class="docutils literal notranslate"><span class="pre">file</span></code> section containing a <code class="docutils literal notranslate"><span class="pre">type</span></code> parameter
-(currently only <code class="docutils literal notranslate"><span class="pre">artis</span></code> is supported``) and a <code class="docutils literal notranslate"><span class="pre">name</span></code> parameter giving a path top a file.</p>
-<p>If one doesn’t specify a <code class="docutils literal notranslate"><span class="pre">file</span></code> section, the code requires two sections (<code class="docutils literal notranslate"><span class="pre">velocities</span></code> and <code class="docutils literal notranslate"><span class="pre">densities</span></code>) and a
-parameter <code class="docutils literal notranslate"><span class="pre">no_of_shells</span></code>. <code class="docutils literal notranslate"><span class="pre">no_of_shells</span></code> is the requested number of shells for a model. The <code class="docutils literal notranslate"><span class="pre">velocity</span></code> section
-requires a <code class="docutils literal notranslate"><span class="pre">type</span></code>. Currently, only <code class="docutils literal notranslate"><span class="pre">linear</span></code> is supported.</p>
-<dl class="simple">
-<dt>In the <code class="docutils literal notranslate"><span class="pre">densities</span></code> section the <code class="docutils literal notranslate"><span class="pre">type</span></code> parameter again decides on the parameters. The type <code class="docutils literal notranslate"><span class="pre">uniform</span></code> only needs a</dt><dd><p><code class="docutils literal notranslate"><span class="pre">value</span></code> parameter with a density compatible quantity. The type <code class="docutils literal notranslate"><span class="pre">branch85_w7</span></code> uses a seven-order polynomial fit to
-the W7 model and is parametrised by time since explosion. The parameters <code class="docutils literal notranslate"><span class="pre">time_0</span></code> and <code class="docutils literal notranslate"><span class="pre">density_coefficient</span></code> are set
-to sensible defaults and should not be changed.</p>
-</dd>
-</dl>
-<p>The <code class="docutils literal notranslate"><span class="pre">abundance</span></code> section again has a possible <code class="docutils literal notranslate"><span class="pre">file</span></code> parameter with <code class="docutils literal notranslate"><span class="pre">type</span></code> (currently only <code class="docutils literal notranslate"><span class="pre">artis</span></code> is allowed)
+<div class="section" id="abundances">
+<h4><a class="toc-backref" href="#id4">Abundances</a><a class="headerlink" href="#abundances" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">abundance</span></code> section has a possible <code class="docutils literal notranslate"><span class="pre">file</span></code> parameter with <code class="docutils literal notranslate"><span class="pre">type</span></code> (currently only <code class="docutils literal notranslate"><span class="pre">artis</span></code> is allowed)
 and a <code class="docutils literal notranslate"><span class="pre">name</span></code> parameter giving a path to a file containing the abundance information.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -521,9 +526,478 @@ the section but merely will overwrite the abundances given in the file section.<
 </div>
 <p>The rest of the section can be used to configure uniform abundances for all shells, by giving the atom name and a
 relative abundance fraction. If it does not add up to 1., TARDIS will warn — but normalize the numbers.</p>
+<div class="section" id="file-abundance">
+<span id="file-abundance"></span><h5><a class="toc-backref" href="#id5">File Abundance</a><a class="headerlink" href="#file-abundance" title="Permalink to this headline">¶</a></h5>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td><p>file</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>filetype</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>type of abundance file to read in</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>filename</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>filename</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="uniform-abundance">
+<span id="uniform-abundance"></span><h5><a class="toc-backref" href="#id6">Uniform Abundance</a><a class="headerlink" href="#uniform-abundance" title="Permalink to this headline">¶</a></h5>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td><p>uniform</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><p>additionalProperties</p></td>
+<td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>maximum</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="structure">
+<h4><a class="toc-backref" href="#id7">Structure</a><a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h4>
+<p>All types of <code class="docutils literal notranslate"><span class="pre">structure</span></code> definitions have two keywords in common: <code class="docutils literal notranslate"><span class="pre">v_inner_boundary</span></code> and <code class="docutils literal notranslate"><span class="pre">v_outer_boundary</span></code>.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">structure</span></code> section, one can specify a <code class="docutils literal notranslate"><span class="pre">file</span></code> section containing a <code class="docutils literal notranslate"><span class="pre">type</span></code> parameter
+(currently only <code class="docutils literal notranslate"><span class="pre">artis</span></code> is supported``) and a <code class="docutils literal notranslate"><span class="pre">name</span></code> parameter giving a path top a file.</p>
+<p>If one doesn’t specify a <code class="docutils literal notranslate"><span class="pre">file</span></code> section, the code requires two sections (<code class="docutils literal notranslate"><span class="pre">velocities</span></code> and <code class="docutils literal notranslate"><span class="pre">densities</span></code>) and a
+parameter <code class="docutils literal notranslate"><span class="pre">no_of_shells</span></code>. <code class="docutils literal notranslate"><span class="pre">no_of_shells</span></code> is the requested number of shells for a model. The <code class="docutils literal notranslate"><span class="pre">velocity</span></code> section
+requires a <code class="docutils literal notranslate"><span class="pre">type</span></code>. Currently, only <code class="docutils literal notranslate"><span class="pre">linear</span></code> is supported.</p>
+<div class="section" id="file-structure">
+<span id="file-structure"></span><h5><a class="toc-backref" href="#id8">File Structure</a><a class="headerlink" href="#file-structure" title="Permalink to this headline">¶</a></h5>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td><p>file</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>filename</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>file name (with path) to structure model</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>filetype</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>file type</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p>simple_ascii, artis, cmfgen_model</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>v_inner_boundary</p></li>
+</ul>
+</td>
+<td colspan="2"><p>location of the inner boundary chosen from the model</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>-1 km/s</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>v_outer_boundary</p></li>
+</ul>
+</td>
+<td colspan="2"><p>location of the inner boundary chosen from the model</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>-1 km/s</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="specific-structure">
+<span id="specific-structure"></span><h5><a class="toc-backref" href="#id9">Specific Structure</a><a class="headerlink" href="#specific-structure" title="Permalink to this headline">¶</a></h5>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td colspan="2"><p>specific</p></td>
+</tr>
+<tr class="row-even"><td rowspan="7"><ul class="simple">
+<li><p><strong>velocity</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>description of the boundaries of the shells</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>start</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>stop</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>num</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>multipleOf</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>density</strong></p></li>
+</ul>
+</td>
+<td rowspan="4"><p>oneOf</p></td>
+<td colspan="2"><p><a class="reference internal" href="#branch85-w7-density"><span class="std std-ref">Branch85_w7 Density</span></a></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><a class="reference internal" href="#exponential-density"><span class="std std-ref">Exponential Density</span></a></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="#power-law-density"><span class="std std-ref">Power_law Density</span></a></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><a class="reference internal" href="#uniform-density"><span class="std std-ref">Uniform Density</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="densities">
+<h5><a class="toc-backref" href="#id10">Densities</a><a class="headerlink" href="#densities" title="Permalink to this headline">¶</a></h5>
+<p>In the <code class="docutils literal notranslate"><span class="pre">densities</span></code> section the <code class="docutils literal notranslate"><span class="pre">type</span></code> parameter again decides on the parameters. The type <code class="docutils literal notranslate"><span class="pre">uniform</span></code> only needs a
+<code class="docutils literal notranslate"><span class="pre">value</span></code> parameter with a density compatible quantity. The type <code class="docutils literal notranslate"><span class="pre">branch85_w7</span></code> uses a seven-order polynomial fit to
+the W7 model and is parametrised by time since explosion. The parameters <code class="docutils literal notranslate"><span class="pre">time_0</span></code> and <code class="docutils literal notranslate"><span class="pre">density_coefficient</span></code> are set
+to sensible defaults and should not be changed.</p>
+<div class="section" id="branch85-w7-density">
+<span id="branch85-w7-density"></span><h6><a class="toc-backref" href="#id11">Branch85_w7 Density</a><a class="headerlink" href="#branch85-w7-density" title="Permalink to this headline">¶</a></h6>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td><p>branch85_w7</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>w7_time_0</p></li>
+</ul>
+</td>
+<td colspan="2"><p>This needs no change - DO NOT TOUCH</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>0.000231481 day</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>w7_rho_0</p></li>
+</ul>
+</td>
+<td colspan="2"><p>This needs no change - DO NOT TOUCH</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>3e29 g/cm^3</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>w7_v_0</p></li>
+</ul>
+</td>
+<td colspan="2"><p>This needs no change - DO NOT TOUCH</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>1 km/s</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="exponential-density">
+<span id="exponential-density"></span><h6><a class="toc-backref" href="#id12">Exponential Density</a><a class="headerlink" href="#exponential-density" title="Permalink to this headline">¶</a></h6>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td><p>exponential</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>time_0</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Time at which the pure model densities are right</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>rho_0</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>density at time_0</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>v_0</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>at what velocity the density rho_0 applies</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="power-law-density">
+<span id="power-law-density"></span><h6><a class="toc-backref" href="#id13">Power_law Density</a><a class="headerlink" href="#power-law-density" title="Permalink to this headline">¶</a></h6>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td><p>power_law</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>time_0</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Time at which the pure model densities are right</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>rho_0</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>density at time_0</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>v_0</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>at what velocity the density rho_0 applies</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>exponent</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>exponent for exponential density profile</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="uniform-density">
+<span id="uniform-density"></span><h6><a class="toc-backref" href="#id14">Uniform Density</a><a class="headerlink" href="#uniform-density" title="Permalink to this headline">¶</a></h6>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td><p>uniform</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>time_0</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Time at which the pure model densities are right</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>value</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>value for uniform density</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>quantity</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </div>
 <div class="section" id="plasma">
-<h3><a class="toc-backref" href="#id4">Plasma</a><a class="headerlink" href="#plasma" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id15">Plasma</a><a class="headerlink" href="#plasma" title="Permalink to this headline">¶</a></h3>
 <table class="docutils align-default" id="plasma-yml">
 <colgroup>
 <col style="width: 25%" />
@@ -807,7 +1281,7 @@ version of <code class="docutils literal notranslate"><span class="pre">macroato
 <p>Finally, <code class="docutils literal notranslate"><span class="pre">w_epsilon</span></code> describes the dilution factor to use to calculate <span class="math notranslate nohighlight">\(J_\textrm{blue}\)</span> that are 0, which
 causes problemsl with the code (so <span class="math notranslate nohighlight">\(J_\textrm{blue}\)</span> are set to a very small number).</p>
 <div class="section" id="nlte">
-<h4><a class="toc-backref" href="#id5">NLTE</a><a class="headerlink" href="#nlte" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id16">NLTE</a><a class="headerlink" href="#nlte" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">nlte</span><span class="p">:</span>
     <span class="nt">coronal_approximation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
     <span class="nt">classical_nebular</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
@@ -820,7 +1294,7 @@ normal operations.</p>
 </div>
 </div>
 <div class="section" id="monte-carlo">
-<h3><a class="toc-backref" href="#id6">Monte Carlo</a><a class="headerlink" href="#monte-carlo" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id17">Monte Carlo</a><a class="headerlink" href="#monte-carlo" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">montecarlo</span></code> section describes the parameters for the Monte Carlo radiation transport and convergence criteria:</p>
 <table class="docutils align-default" id="montecarlo-yml">
 <colgroup>
@@ -986,9 +1460,9 @@ normal operations.</p>
 <td><p>damped</p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><p>oneOf</p></td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/convergence_strategy/damped</span></p></td>
+<td colspan="2"><p><a class="reference internal" href="#damped-convergence-strategy"><span class="std std-ref">Damped Convergence Strategy</span></a></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p><span class="xref std std-ref">#/definitions/convergence_strategy/custom</span></p></td>
+<tr class="row-odd"><td colspan="2"><p><a class="reference internal" href="#custom-convergence-strategy"><span class="std std-ref">Custom Convergence Strategy</span></a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>enable_full_relativity</p></li>
@@ -1041,15 +1515,291 @@ normal operations.</p>
 <tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>definitions</p></td>
+</tbody>
+</table>
+<div class="section" id="damped-convergence-strategy">
+<span id="damped-convergence-strategy"></span><h4><a class="toc-backref" href="#id18">Damped Convergence Strategy</a><a class="headerlink" href="#damped-convergence-strategy" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><ul class="simple">
-<li><p>convergence_strategy</p></li>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
 </ul>
 </td>
+<td><p>enum</p></td>
+<td colspan="2"><p>damped</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>default</p></li>
+</ul>
+</td>
+<td colspan="3"><p>damped</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>stop_if_converged</p></li>
+</ul>
+</td>
+<td colspan="3"><p>stop plasma iterations before number of specified iterations are reached if the simulation is plasma and inner boundary state is converged</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>fraction</p></li>
+</ul>
+</td>
+<td colspan="3"><p>the fraction of shells that have to converge to the given  convergence threshold. For example, 0.8 means that 80% of shells have to converge to the threshold that convergence is established</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>0.8</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>hold_iterations</p></li>
+</ul>
+</td>
+<td colspan="3"><p>the number of iterations that the convergence criteria need to be fulfilled before TARDIS accepts the simulation as converged</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>multipleOf</p></td>
+<td colspan="2"><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>3</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>damping_constant</p></li>
+</ul>
+</td>
+<td colspan="3"><p>damping constant</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>1.0</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>threshold</p></li>
+</ul>
+</td>
+<td colspan="3"><p>specifies the threshold that is taken as convergence  (i.e. 0.05 means that the value does not change more than 5%)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>0.05</p></td>
+</tr>
+<tr class="row-even"><td rowspan="10"><ul class="simple">
+<li><p>t_inner</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>damping_constant</p></li>
+</ul>
+</td>
+<td colspan="2"><p>damping constant</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>0.5</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>threshold</p></li>
+</ul>
+</td>
+<td colspan="2"><p>specifies the threshold that is taken as convergence  (i.e. 0.05 means that the value does not change more than 5%)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td rowspan="10"><ul class="simple">
+<li><p>t_rad</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>damping_constant</p></li>
+</ul>
+</td>
+<td colspan="2"><p>damping constant</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>0.5</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>threshold</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>specifies the threshold that is taken as convergence  (i.e. 0.05 means that the value does not change more than 5%)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td rowspan="10"><ul class="simple">
+<li><p>w</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>damping_constant</p></li>
+</ul>
+</td>
+<td colspan="2"><p>damping constant</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>0.5</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>threshold</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>specifies the threshold that is taken as convergence  (i.e. 0.05 means that the value does not change more than 5%)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>lock_t_inner_cycles</p></li>
+</ul>
+</td>
+<td colspan="3"><p>The number of cycles to lock the update of the inner boundary temperature. This process helps with convergence. The default is to switch it off (1 cycle)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>multipleOf</p></td>
+<td colspan="2"><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>1</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>t_inner_update_exponent</p></li>
+</ul>
+</td>
+<td colspan="3"><p>L=4*pi*r**2*T^y</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>-0.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section" id="custom-convergence-strategy">
+<span id="custom-convergence-strategy"></span><h4><a class="toc-backref" href="#id19">Custom Convergence Strategy</a><a class="headerlink" href="#custom-convergence-strategy" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td><p>custom</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>description</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Use this convergence_strategy for your specific needs. You need to change the codebase accordingly</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>The <code class="docutils literal notranslate"><span class="pre">seed</span></code> parameter seeds the random number generator first for the creation of the packets
 (<span class="math notranslate nohighlight">\(\nu\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span>) and then the interactions in the actual Monte Carlo process.
 The <code class="docutils literal notranslate"><span class="pre">no_of_packets</span></code> parameter can take a float number for input convenience and gives the number of packets normally
@@ -1063,16 +1813,11 @@ sooner when the convergence threshold has been reached.</p>
 All convergence criteria can be specified separately for the three variables for which convergence can be checked
 (<code class="docutils literal notranslate"><span class="pre">t_inner</span></code>, <code class="docutils literal notranslate"><span class="pre">t_rad</span></code>, <code class="docutils literal notranslate"><span class="pre">ws</span></code>) by specifying subsections in the <code class="docutils literal notranslate"><span class="pre">convergence_criteria</span></code> of the same name. These then
 override the defaults.</p>
-<ol class="arabic simple">
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">damped</span></code> only has one parameter <code class="docutils literal notranslate"><span class="pre">damping-constant</span></code> and does not check for convergence. This can be used to fix the</dt><dd><p>temperature of the inner boundary (by increasing the <code class="docutils literal notranslate"><span class="pre">convergence_criteria</span></code> and</p>
-</dd>
-</dl>
-</li>
-</ol>
+<p><code class="docutils literal notranslate"><span class="pre">damped</span></code> only has one parameter <code class="docutils literal notranslate"><span class="pre">damping-constant</span></code> and does not check for convergence. This can be used to fix the
+temperature of the inner boundary (by increasing the <code class="docutils literal notranslate"><span class="pre">convergence_criteria</span></code> and</p>
 </div>
 <div class="section" id="spectrum">
-<h3><a class="toc-backref" href="#id7">Spectrum</a><a class="headerlink" href="#spectrum" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id20">Spectrum</a><a class="headerlink" href="#spectrum" title="Permalink to this headline">¶</a></h3>
 <table class="docutils align-default" id="spectrum-yml">
 <colgroup>
 <col style="width: 25%" />
@@ -1153,13 +1898,13 @@ override the defaults.</p>
 <li><p>interpolate_shells</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Number of shells on which the formal integral quantities are interpolated</p></td>
+<td colspan="2"><p>Number of shells on which the formal integral quantities are interpolated. For -1 no interpolation is used. The default is to use twice the number of computational shells but at least 80.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td><p>-1</p></td>
+<td><p>0</p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>

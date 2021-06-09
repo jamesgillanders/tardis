@@ -7,12 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Volume-based Monte Carlo Estimators &mdash; TARDIS v3.0.dev1</title>
+  <title>Volume-based Monte Carlo Estimators &mdash; TARDIS v3.0.dev3991</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
 
@@ -33,12 +35,13 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -73,7 +76,7 @@
             
             
               <div class="version">
-                3.0.dev1
+                3.0.dev3991
               </div>
             
           
@@ -137,6 +140,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../credits.html">Credits &amp; Publication Policies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sponsors.html">Sponsors</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul>
@@ -250,9 +254,9 @@
 <p>An integral part of Monte Carlo radiative transfer calculations consists of
 reconstructing macroscopic radiation field properties from the ensemble of
 packet interaction histories. TARDIS uses volume-based Monte Carlo estimators
-for this purpose. This concept was originally developed by <a class="bibtex reference internal" href="../../zreferences.html#lucy1999" id="id1">[Lucy99a]</a> and
-successively refined, for example, by <a class="bibtex reference internal" href="../../zreferences.html#lucy1999a" id="id2">[Lucy99b]</a>, <a class="bibtex reference internal" href="../../zreferences.html#lucy2002" id="id3">[Lucy02]</a> and
-<a class="bibtex reference internal" href="../../zreferences.html#lucy2003" id="id4">[Lucy03]</a>.</p>
+for this purpose. This concept was originally developed by <span id="id1">[<a class="reference internal" href="../../zreferences.html#id24" title="L. B. Lucy. Computing radiative equilibria with Monte Carlo techniques. Astronomy and Astrophysics, 344:282-288, April 1999.">Lucy99a</a>]</span> and
+successively refined, for example, by <span id="id2">[<a class="reference internal" href="../../zreferences.html#id25" title="L. B. Lucy. Improved Monte Carlo techniques for the spectral synthesis of supernovae. Astronomy and Astrophysics, 345:211-220, May 1999.">Lucy99b</a>]</span>, <span id="id3">[<a class="reference internal" href="../../zreferences.html#id23" title="L. B. Lucy. Monte Carlo transition probabilities. Astronomy and Astrophysics, 384:725-735, March 2002. arXiv:arXiv:astro-ph/0107377, doi:10.1051/0004-6361:20011756.">Lucy02</a>]</span> and
+<span id="id4">[<a class="reference internal" href="../../zreferences.html#id22" title="L. B. Lucy. Monte Carlo transition probabilities. II. Astronomy and Astrophysics, 403:261-275, May 2003. arXiv:arXiv:astro-ph/0303202, doi:10.1051/0004-6361:20030357.">Lucy03</a>]</span>.</p>
 <div class="section" id="basic-principle">
 <h2>Basic Principle<a class="headerlink" href="#basic-principle" title="Permalink to this headline">¶</a></h2>
 <p>The basic principle underlying volume-based estimators is best illustrated
@@ -287,7 +291,7 @@ Carlo noise than simple counting reconstruction schemes.</p>
 <h2>Volume-based Estimators in TARDIS<a class="headerlink" href="#volume-based-estimators-in-tardis" title="Permalink to this headline">¶</a></h2>
 <p>Within TARDIS, volume-based estimators are used to reconstruct the mean
 intensity and the mean frequency of the radiation field (see also
-<a class="bibtex reference internal" href="../../zreferences.html#kerzendorf2014" id="id5">[KerzendorfSim14]</a>). An estimator for the former is easily formulated by
+<span id="id5">[<a class="reference internal" href="../../zreferences.html#id19" title="W. E. Kerzendorf and S. A. Sim. A spectral synthesis code for rapid modelling of supernovae. Monthly Notices of the RAS, 440:387-404, May 2014. arXiv:1401.5469, doi:10.1093/mnras/stu055.">KerzendorfSim14</a>]</span>). An estimator for the former is easily formulated by
 using the fundamental relation <span class="math notranslate nohighlight">\(J = \frac{c}{4\pi} E\)</span> and the energy density
 estimator derived above:</p>
 <div class="math notranslate nohighlight">
@@ -325,7 +329,7 @@ the Macro Atom treatment and in the ionisation calculation.</p>
 (see <a class="reference internal" href="propagation.html#propagation"><span class="std std-ref">Propagation</span></a>) of the transition. For a derivation of this
 estimator, in particular, for a motivation of the expansion factor involving
 the time since explosion <span class="math notranslate nohighlight">\(t_{\mathrm{exp}}\)</span>, we refer to
-<a class="bibtex reference internal" href="../../zreferences.html#lucy2003" id="id6">[Lucy03]</a>, section 6.2.</p>
+<span id="id6">[<a class="reference internal" href="../../zreferences.html#id22" title="L. B. Lucy. Monte Carlo transition probabilities. II. Astronomy and Astrophysics, 403:261-275, May 2003. arXiv:arXiv:astro-ph/0303202, doi:10.1051/0004-6361:20030357.">Lucy03</a>]</span>, section 6.2.</p>
 </div>
 </div>
 

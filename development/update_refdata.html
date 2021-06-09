@@ -7,12 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Procedure to update the reference data &mdash; TARDIS v3.0.dev1</title>
+  <title>Procedure to update the reference data &mdash; TARDIS v3.0.dev3991</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
   <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
 
@@ -33,6 +35,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -71,7 +74,7 @@
             
             
               <div class="version">
-                3.0.dev1
+                3.0.dev3991
               </div>
             
           
@@ -121,6 +124,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../credits.html">Credits &amp; Publication Policies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sponsors.html">Sponsors</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul class="current">
@@ -257,14 +261,14 @@
 <li><p>Clone <code class="docutils literal notranslate"><span class="pre">tardis-refdata</span></code> to your computer. Then make a new branch named the same as your new TARDIS feature branch. Make sure to have correctly set up the <code class="docutils literal notranslate"><span class="pre">upstream</span></code> remote as explained in <a class="reference internal" href="git_workflow.html#reviewing-and-helping-with-pr"><span class="std std-ref">Reviewing and helping others with Pull Requests</span></a>.</p></li>
 <li><p>Activate your <code class="docutils literal notranslate"><span class="pre">tardis</span></code> conda environment.</p>
 <blockquote>
-<div><div class="highlight-None notranslate"><div class="highlight"><pre><span></span>conda activate tardis
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda activate tardis
 </pre></div>
 </div>
 </div></blockquote>
 </li>
 <li><p>Navigate to your <code class="docutils literal notranslate"><span class="pre">tardis-refdata</span></code> directory and type:</p>
 <blockquote>
-<div><div class="highlight-None notranslate"><div class="highlight"><pre><span></span>git lfs install
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>git lfs install
 git lfs fetch upstream
 git lfs pull
 </pre></div>
@@ -273,14 +277,14 @@ git lfs pull
 </li>
 <li><p>Go to your <code class="docutils literal notranslate"><span class="pre">tardis</span></code> directory. Make sure you are working on the correct branch and generate new reference data using:</p>
 <blockquote>
-<div><div class="highlight-None notranslate"><div class="highlight"><pre><span></span>python setup.py test --args=&quot;--tardis-refdata=&lt;path to refdata repo on the right branch&gt; --generate-reference&quot;
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>python setup.py test --args=&quot;--tardis-refdata=&lt;path to refdata repo on the right branch&gt; --generate-reference&quot;
 </pre></div>
 </div>
 </div></blockquote>
 </li>
 <li><p>Re-run the tests to make sure it does not fail using:</p>
 <blockquote>
-<div><div class="highlight-None notranslate"><div class="highlight"><pre><span></span>python setup.py test --args=&quot;--tardis-refdata=&lt;path to refdata repo on the right branch&gt;&quot;
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>python setup.py test --args=&quot;--tardis-refdata=&lt;path to refdata repo on the right branch&gt;&quot;
 </pre></div>
 </div>
 </div></blockquote>
@@ -288,18 +292,18 @@ git lfs pull
 <li><p>Go back to your <code class="docutils literal notranslate"><span class="pre">tardis-refdata</span></code> folder, and run a Jupyter Notebook session inside the <code class="docutils literal notranslate"><span class="pre">notebook</span></code> folder.</p></li>
 <li><p>Open the <code class="docutils literal notranslate"><span class="pre">ref_data_compare.ipynb</span></code> file notebook and look for the cell with the following code:</p>
 <blockquote>
-<div><div class="highlight-None notranslate"><div class="highlight"><pre><span></span>comparer = ReferenceComparer(ref2_hash=&#39;upstream/pr/24&#39;)
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>comparer = ReferenceComparer(ref2_hash=&#39;upstream/pr/24&#39;)
 </pre></div>
 </div>
-</div></blockquote>
 <p>Replace ‘24’ for the number of the last merged pull request showed <a class="reference external" href="https://github.com/tardis-sn/tardis-refdata/pulls?utf8=%E2%9C%93&amp;q=is%3Apr+is%3Aclosed">here</a>.</p>
+</div></blockquote>
 </li>
 <li><p>Run all cells and check if there are any unexpected changes in the updated reference data respect the previous one.</p></li>
 <li><p>Commit the changes made to the reference data and open a PR on <code class="docutils literal notranslate"><span class="pre">tardis-refdata</span></code>.</p></li>
 <li><p>Switch back to the <code class="docutils literal notranslate"><span class="pre">tardis</span></code> directory. Open the <code class="docutils literal notranslate"><span class="pre">.travis.yml</span></code> file and change the following lines:</p>
 <blockquote>
-<div><div class="highlight-None notranslate"><div class="highlight"><pre><span></span>- if [[ $TEST_MODE == &#39;spectrum&#39; ]]; then git fetch origin pull/&lt;your tardis-refdata PR number; not the TARDIS PR number&gt;/head:&lt;some descriptive name&gt;; fi
-- if [[ $TEST_MODE == &#39;spectrum&#39; ]]; then git checkout &lt;some descriptive name&gt;; fi```
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- if [[ $TEST_MODE == &#39;spectrum&#39; ]]; then git fetch origin pull/&lt;your tardis-refdata PR number; not the TARDIS PR number&gt;/head:&lt;some descriptive name&gt;; fi
+- if [[ $TEST_MODE == &#39;spectrum&#39; ]]; then git checkout &lt;some descriptive name&gt;; fi
 </pre></div>
 </div>
 </div></blockquote>
@@ -309,8 +313,8 @@ git lfs pull
 <li><p>Ask for review for your PR on <code class="docutils literal notranslate"><span class="pre">tardis-refdata</span></code> and wait for merge.</p></li>
 <li><p>Then change the <code class="docutils literal notranslate"><span class="pre">.travis.yml</span></code> in <code class="docutils literal notranslate"><span class="pre">tardis</span></code> directory to:</p>
 <blockquote>
-<div><div class="highlight-None notranslate"><div class="highlight"><pre><span></span>- if [[ $TEST_MODE == &#39;spectrum&#39; ]]; then git fetch origin; fi
-- if [[ $TEST_MODE == &#39;spectrum&#39; ]]; then git checkout origin/master; fi```
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- if [[ $TEST_MODE == &#39;spectrum&#39; ]]; then git fetch origin; fi
+- if [[ $TEST_MODE == &#39;spectrum&#39; ]]; then git checkout origin/master; fi
 </pre></div>
 </div>
 </div></blockquote>

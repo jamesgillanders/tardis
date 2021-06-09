@@ -7,12 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tardis.io.model_reader &mdash; TARDIS v3.0.dev1</title>
+  <title>tardis.io.model_reader &mdash; TARDIS v3.0.dev3991</title>
   
 
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/plot_directive.css" type="text/css" />
 
@@ -33,6 +35,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
@@ -69,7 +72,7 @@
             
             
               <div class="version">
-                3.0.dev1
+                3.0.dev3991
               </div>
             
           
@@ -119,6 +122,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../credits.html">Credits &amp; Publication Policies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sponsors.html">Sponsors</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul>
@@ -269,8 +273,7 @@
     <span class="k">if</span> <span class="n">invalid_volume_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
             <span class="p">[</span>
-                <span class="s2">&quot;cell </span><span class="si">{0:d}</span><span class="s2">: v_inner </span><span class="si">{1:s}</span><span class="s2">, v_outer &quot;</span>
-                <span class="s2">&quot;</span><span class="si">{2:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v_inner_i</span><span class="p">,</span> <span class="n">v_outer_i</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;cell </span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">d</span><span class="si">}</span><span class="s2">: v_inner </span><span class="si">{</span><span class="n">v_inner_i</span><span class="si">:</span><span class="s2">s</span><span class="si">}</span><span class="s2">, v_outer &quot;</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v_outer_i</span><span class="si">:</span><span class="s2">s</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v_inner_i</span><span class="p">,</span> <span class="n">v_outer_i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
                     <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v_outer</span><span class="p">))[</span><span class="n">invalid_volume_mask</span><span class="p">],</span>
                     <span class="n">v_inner</span><span class="p">[</span><span class="n">invalid_volume_mask</span><span class="p">],</span>
@@ -279,7 +282,7 @@
             <span class="p">]</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid volume of following cell(s):</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="s2">&quot;Invalid volume of following cell(s):</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">message</span><span class="si">:</span><span class="s2">s</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="p">(</span>
@@ -382,9 +385,7 @@
 
         <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;Abundances are not defined properly in config file : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">err</span><span class="o">.</span><span class="n">args</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;Abundances are not defined properly in config file : </span><span class="si">{</span><span class="n">err</span><span class="o">.</span><span class="n">args</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">abundance</span><span class="p">,</span> <span class="n">isotope_abundance</span></div>

@@ -7,12 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tardis.montecarlo.packet_source &mdash; TARDIS v3.0.dev1</title>
+  <title>tardis.montecarlo.packet_source &mdash; TARDIS v3.0.dev3991</title>
   
 
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/plot_directive.css" type="text/css" />
 
@@ -33,6 +35,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
@@ -69,7 +72,7 @@
             
             
               <div class="version">
-                3.0.dev1
+                3.0.dev3991
               </div>
             
           
@@ -119,6 +122,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../credits.html">Credits &amp; Publication Policies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sponsors.html">Sponsors</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul>
@@ -240,9 +244,9 @@
 <div class="viewcode-block" id="BasePacketSource.create_uniform_packet_energies"><a class="viewcode-back" href="../../../api/tardis.montecarlo.packet_source.html#tardis.montecarlo.packet_source.BasePacketSource.create_uniform_packet_energies">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">create_uniform_packet_energies</span><span class="p">(</span><span class="n">no_of_packets</span><span class="p">,</span> <span class="n">rng</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Uniformly distribute energy in arbitrary units where the ensemble of </span>
-<span class="sd">        packets has energy of 1. </span>
-<span class="sd">        </span>
+<span class="sd">        Uniformly distribute energy in arbitrary units where the ensemble of</span>
+<span class="sd">        packets has energy of 1.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        no_of_packets : int</span>
@@ -275,7 +279,7 @@
 <span class="sd">        .. math::</span>
 <span class="sd">            x = -\\ln{(\\xi_1\\xi_2\\xi_3\\xi_4)}/l_{\\rm min}\\; .</span>
 <span class="sd">        where :math:`x=h\\nu/kT`</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        T : float</span>
@@ -283,7 +287,7 @@
 <span class="sd">        no_of_packets : int</span>
 <span class="sd">        l_samples : int</span>
 <span class="sd">            number of l_samples needed in the algorithm</span>
-<span class="sd">            </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">            : numpy.ndarray</span>
@@ -312,12 +316,36 @@
 <span class="sd">    part.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BlackBodySimpleSource.create_packets"><a class="viewcode-back" href="../../../api/tardis.montecarlo.packet_source.html#tardis.montecarlo.packet_source.BlackBodySimpleSource.create_packets">[docs]</a>    <span class="k">def</span> <span class="nf">create_packets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">no_of_packets</span><span class="p">,</span> <span class="n">rng</span><span class="p">):</span>
+<div class="viewcode-block" id="BlackBodySimpleSource.create_packets"><a class="viewcode-back" href="../../../api/tardis.montecarlo.packet_source.html#tardis.montecarlo.packet_source.BlackBodySimpleSource.create_packets">[docs]</a>    <span class="k">def</span> <span class="nf">create_packets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">no_of_packets</span><span class="p">,</span> <span class="n">rng</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate black-body packet properties as arrays</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        T : float64</span>
+<span class="sd">            Temperature</span>
+<span class="sd">        no_of_packets : int</span>
+<span class="sd">            Number of packets</span>
+<span class="sd">        rng : numpy random number generator</span>
+<span class="sd">        radius : float64</span>
+<span class="sd">            Initial packet radius</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        array</span>
+<span class="sd">            Packet radii</span>
+<span class="sd">        array</span>
+<span class="sd">            Packet frequencies</span>
+<span class="sd">        array</span>
+<span class="sd">            Packet directions</span>
+<span class="sd">        array</span>
+<span class="sd">            Packet energies</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">no_of_packets</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span>
         <span class="n">nus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_blackbody_packet_nus</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">no_of_packets</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
         <span class="n">mus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_zero_limb_darkening_packet_mus</span><span class="p">(</span><span class="n">no_of_packets</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
         <span class="n">energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_uniform_packet_energies</span><span class="p">(</span><span class="n">no_of_packets</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">nus</span><span class="p">,</span> <span class="n">mus</span><span class="p">,</span> <span class="n">energies</span></div></div>
+        <span class="k">return</span> <span class="n">radii</span><span class="p">,</span> <span class="n">nus</span><span class="p">,</span> <span class="n">mus</span><span class="p">,</span> <span class="n">energies</span></div></div>
 </pre></div>
 
            </div>

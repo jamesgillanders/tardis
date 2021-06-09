@@ -7,12 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tardis.io.atom_data.base &mdash; TARDIS v3.0.dev1</title>
+  <title>tardis.io.atom_data.base &mdash; TARDIS v3.0.dev3991</title>
   
 
   
   <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
   <link rel="stylesheet" href="../../../../_static/plot_directive.css" type="text/css" />
 
@@ -33,6 +35,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
@@ -69,7 +72,7 @@
             
             
               <div class="version">
-                3.0.dev1
+                3.0.dev3991
               </div>
             
           
@@ -119,6 +122,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../credits.html">Credits &amp; Publication Policies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sponsors.html">Sponsors</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul>
@@ -240,7 +244,7 @@
 <span class="sd">        A DataFrame containing the *ionization data* with:</span>
 <span class="sd">            index : atomic_number, ion_number;</span>
 <span class="sd">            columns : ionization_energy[eV].</span>
-<span class="sd">       It is important to note here is that `ion_number` describes the *final ion state*</span>
+<span class="sd">        It is important to note here is that `ion_number` describes the *final ion state*</span>
 <span class="sd">            e.g. H I - H II is described with ion=1</span>
 <span class="sd">    levels : pandas.DataFrame</span>
 <span class="sd">        A DataFrame containing the *levels data* with:</span>
@@ -378,15 +382,11 @@
             <span class="c1"># ToDo: strore data sources as attributes in carsus</span>
 
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s2">&quot;Read Atom Data with UUID=</span><span class="si">{0}</span><span class="s2"> and MD5=</span><span class="si">{1}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">atom_data</span><span class="o">.</span><span class="n">uuid1</span><span class="p">,</span> <span class="n">atom_data</span><span class="o">.</span><span class="n">md5</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;Read Atom Data with UUID=</span><span class="si">{</span><span class="n">atom_data</span><span class="o">.</span><span class="n">uuid1</span><span class="si">}</span><span class="s2"> and MD5=</span><span class="si">{</span><span class="n">atom_data</span><span class="o">.</span><span class="n">md5</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">nonavailable</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="s2">&quot;Non provided atomic data: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nonavailable</span><span class="p">)</span>
-                    <span class="p">)</span>
+                    <span class="sa">f</span><span class="s1">&#39;Non provided atomic data: </span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nonavailable</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
                 <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">atom_data</span></div>
@@ -432,9 +432,7 @@
         <span class="n">levels</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Quantity</span><span class="p">(</span><span class="n">levels</span><span class="p">[</span><span class="s2">&quot;energy&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="s2">&quot;eV&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cgs</span>
 
         <span class="c1"># Create a new columns with wavelengths in the CGS units</span>
-        <span class="n">lines</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;wavelength_cm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Quantity</span><span class="p">(</span>
-            <span class="n">lines</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span> <span class="s2">&quot;angstrom&quot;</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">cgs</span>
+        <span class="n">lines</span><span class="p">[</span><span class="s2">&quot;wavelength_cm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Quantity</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cgs</span>
 
         <span class="c1"># SET ATTRIBUTES</span>
 
@@ -478,10 +476,8 @@
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">check_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">check_list</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">AtomDataMissingError</span><span class="p">(</span>
-                    <span class="s2">&quot;The following dataframes from the related group [</span><span class="si">{0}</span><span class="s2">] &quot;</span>
-                    <span class="s2">&quot;were not given: </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">group</span><span class="p">),</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">check_list</span><span class="p">)</span>
-                    <span class="p">)</span>
+                    <span class="sa">f</span><span class="s1">&#39;The following dataframes from the related group [</span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">group</span><span class="p">)</span><span class="si">}</span><span class="s1">]&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;were not given: </span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">check_list</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
                 <span class="p">)</span>
 
 <div class="viewcode-block" id="AtomData.prepare_atom_data"><a class="viewcode-back" href="../../../../api/tardis.io.atom_data.base.html#tardis.io.atom_data.base.AtomData.prepare_atom_data">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_atom_data</span><span class="p">(</span>
@@ -682,18 +678,12 @@
             <span class="n">missing_atom_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">atomic_number_check</span><span class="p">)</span>
             <span class="n">missing_atomic_numbers</span> <span class="o">=</span> <span class="n">selected_atomic_numbers</span><span class="p">[</span><span class="n">missing_atom_mask</span><span class="p">]</span>
             <span class="n">missing_numbers_str</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing_atomic_numbers</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;str&quot;</span><span class="p">))</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;For atomic numbers </span><span class="si">{}</span><span class="s2"> there is no atomic data.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">missing_numbers_str</span>
-            <span class="p">)</span>
+
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;For atomic numbers </span><span class="si">{</span><span class="n">missing_numbers_str</span><span class="si">}</span><span class="s2"> there is no atomic data.&quot;</span>
             <span class="k">raise</span> <span class="n">AtomDataMissingError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;Atomic Data UUID=</span><span class="si">{}</span><span class="s2"> MD5=</span><span class="si">{}</span><span class="s2"> Lines=</span><span class="si">{:d}</span><span class="s2"> Levels=</span><span class="si">{:d}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">uuid1</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">md5</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">line_id</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Atomic Data UUID=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid1</span><span class="si">}</span><span class="s2"> MD5=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">md5</span><span class="si">}</span><span class="s2"> Lines=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">line_id</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="si">:</span><span class="s2">d</span><span class="si">}</span><span class="s2"> Levels=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="si">:</span><span class="s2">d</span><span class="si">}</span><span class="s2">&gt;&quot;</span></div>
 
 
 <div class="viewcode-block" id="NLTEData"><a class="viewcode-back" href="../../../../api/tardis.io.atom_data.base.html#tardis.io.atom_data.base.NLTEData">[docs]</a><span class="k">class</span> <span class="nc">NLTEData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

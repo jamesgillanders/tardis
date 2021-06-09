@@ -7,12 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tardis.base &mdash; TARDIS v3.0.dev1</title>
+  <title>tardis.base &mdash; TARDIS v3.0.dev3991</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
 
@@ -33,6 +35,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -69,7 +72,7 @@
             
             
               <div class="version">
-                3.0.dev1
+                3.0.dev3991
               </div>
             
           
@@ -119,6 +122,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../credits.html">Credits &amp; Publication Policies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sponsors.html">Sponsors</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul>
@@ -204,7 +208,11 @@
 
 
 <div class="viewcode-block" id="run_tardis"><a class="viewcode-back" href="../../api/tardis.base.html#tardis.base.run_tardis">[docs]</a><span class="k">def</span> <span class="nf">run_tardis</span><span class="p">(</span>
-    <span class="n">config</span><span class="p">,</span> <span class="n">atom_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">packet_source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">simulation_callbacks</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">config</span><span class="p">,</span>
+    <span class="n">atom_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">packet_source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">simulation_callbacks</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">virtual_packet_logging</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function is one of the core functions to run TARDIS from a given</span>
@@ -214,13 +222,20 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    config : str or dict</span>
-<span class="sd">        filename of configuration yaml file or dictionary</span>
+<span class="sd">    config : str or dict or tardis.io.config_reader.Configuration</span>
+<span class="sd">        filename of configuration yaml file or dictionary or TARDIS Configuration object</span>
 <span class="sd">    atom_data : str or tardis.atomic.AtomData</span>
 <span class="sd">        if atom_data is a string it is interpreted as a path to a file storing</span>
 <span class="sd">        the atomic data. Atomic data to use for this TARDIS simulation. If set to None, the</span>
 <span class="sd">        atomic data will be loaded according to keywords set in the configuration</span>
 <span class="sd">        [default=None]</span>
+<span class="sd">    virtual_packet_logging : bool</span>
+<span class="sd">        option to enable virtual packet logging</span>
+<span class="sd">        [default=False]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Simulation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">tardis.io.config_reader</span> <span class="kn">import</span> <span class="n">Configuration</span>
     <span class="kn">from</span> <span class="nn">tardis.io.atom_data.base</span> <span class="kn">import</span> <span class="n">AtomData</span>
@@ -232,13 +247,19 @@
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
             <span class="n">atom_data</span> <span class="o">=</span> <span class="n">atom_data</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">tardis_config</span> <span class="o">=</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-        <span class="n">tardis_config</span> <span class="o">=</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">from_config_dict</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">Configuration</span><span class="p">):</span>
+        <span class="n">tardis_config</span> <span class="o">=</span> <span class="n">config</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tardis_config</span> <span class="o">=</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">tardis_config</span> <span class="o">=</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">from_config_dict</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
     <span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span>
-        <span class="n">tardis_config</span><span class="p">,</span> <span class="n">packet_source</span><span class="o">=</span><span class="n">packet_source</span><span class="p">,</span> <span class="n">atom_data</span><span class="o">=</span><span class="n">atom_data</span>
+        <span class="n">tardis_config</span><span class="p">,</span>
+        <span class="n">packet_source</span><span class="o">=</span><span class="n">packet_source</span><span class="p">,</span>
+        <span class="n">atom_data</span><span class="o">=</span><span class="n">atom_data</span><span class="p">,</span>
+        <span class="n">virtual_packet_logging</span><span class="o">=</span><span class="n">virtual_packet_logging</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">for</span> <span class="n">cb</span> <span class="ow">in</span> <span class="n">simulation_callbacks</span><span class="p">:</span>
         <span class="n">simulation</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="o">*</span><span class="n">cb</span><span class="p">)</span>

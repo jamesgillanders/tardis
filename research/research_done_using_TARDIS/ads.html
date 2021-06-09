@@ -7,12 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>&lt;no title&gt; &mdash; TARDIS v3.0.dev1</title>
+  <title>Generating TARDIS Citations &mdash; TARDIS v3.0.dev3991</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
 
@@ -33,12 +35,13 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -71,7 +74,7 @@
             
             
               <div class="version">
-                3.0.dev1
+                3.0.dev3991
               </div>
             
           
@@ -121,6 +124,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../credits.html">Credits &amp; Publication Policies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sponsors.html">Sponsors</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul>
@@ -184,7 +188,7 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>&lt;no title&gt;</li>
+      <li>Generating TARDIS Citations</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -476,6 +480,9 @@ div.rendered_html tbody tr:hover {
 <p>This notebook is available at
 <a class="reference external" href="https://github.com/tardis-sn/tardis/tree/master/docs/research/research_done_using_TARDIS/ads.ipynb">https://github.com/tardis-sn/tardis/tree/master/docs/research/research_done_using_TARDIS/ads.ipynb</a>
 —-</p>
+<div class="section" id="Generating-TARDIS-Citations">
+<h1>Generating TARDIS Citations<a class="headerlink" href="#Generating-TARDIS-Citations" title="Permalink to this headline">¶</a></h1>
+<p>Note: This notebook only works if you have the ADS python package and an API key for ADS (for information, see <a class="reference external" href="https://ads.readthedocs.io/en/latest/">https://ads.readthedocs.io/en/latest/</a>).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -525,7 +532,7 @@ div.rendered_html tbody tr:hover {
 <span class="k">def</span> <span class="nf">get_hyperlink</span><span class="p">(</span><span class="n">bibcodes</span><span class="p">):</span>
     <span class="n">hyperlink_list</span><span class="o">=</span><span class="p">[]</span>
     <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">get_url</span><span class="p">(</span><span class="n">bibcodes</span><span class="p">):</span>
-        <span class="n">hyperlink_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;`(ADS Link) &lt;</span><span class="si">{}</span><span class="s1">&gt;`_&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+        <span class="n">hyperlink_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;`(ADS Link) &lt;</span><span class="si">{}</span><span class="s1">&gt;`__&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">hyperlink_list</span>
 </pre></div>
 </div>
@@ -677,6 +684,54 @@ div.rendered_html tbody tr:hover {
   <tbody>
     <tr>
       <th>0</th>
+      <td>Dutta, Anirban, Singh, Avinash, Anupama, G. C....</td>
+      <td>2021</td>
+      <td>MNRAS</td>
+      <td>SN 2017hpa: a carbon-rich Type Ia supernova</td>
+      <td>https://ui.adsabs.harvard.edu/abs/2021MNRAS.50...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Kerzendorf, Wolfgang E., Vogl, Christian, Buch...</td>
+      <td>2021</td>
+      <td>ApJL</td>
+      <td>Dalek: A Deep Learning Emulator for TARDIS</td>
+      <td>https://ui.adsabs.harvard.edu/abs/2021ApJ...91...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Magee, M. R., Maguire, K., Kotak, R., et al.</td>
+      <td>2021</td>
+      <td>MNRAS</td>
+      <td>Exploring the diversity of double-detonation e...</td>
+      <td>https://ui.adsabs.harvard.edu/abs/2021MNRAS.50...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Fiore, A., Chen, T. -W., Jerkstrand, A., et al.</td>
+      <td>2021</td>
+      <td>MNRAS</td>
+      <td>SN 2017gci: a nearby Type I Superluminous Supe...</td>
+      <td>https://ui.adsabs.harvard.edu/abs/2021MNRAS.50...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Williamson, Marc, Kerzendorf, Wolfgang, Modjaz...</td>
+      <td>2021</td>
+      <td>ApJ</td>
+      <td>Modeling Type Ic Supernovae with TARDIS: Hidde...</td>
+      <td>https://ui.adsabs.harvard.edu/abs/2021ApJ...90...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Barna, Barnabás, Szalai, Tamás, Jha, Saurabh W...</td>
+      <td>2021</td>
+      <td>MNRAS</td>
+      <td>SN 2019muj - a well-observed Type Iax supernov...</td>
+      <td>https://ui.adsabs.harvard.edu/abs/2021MNRAS.50...</td>
+    </tr>
+    <tr>
+      <th>6</th>
       <td>Magee, M. R., Maguire, K.</td>
       <td>2020</td>
       <td>A&amp;A</td>
@@ -684,7 +739,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2020A&amp;A...64...</td>
     </tr>
     <tr>
-      <th>1</th>
+      <th>7</th>
       <td>Chen, Xingzhuo, Hu, Lei, Wang, Lifan</td>
       <td>2020</td>
       <td>ApJS</td>
@@ -692,15 +747,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2020ApJS..25...</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>Miller, A. A., Magee, M. R., Polin, A., et al.</td>
-      <td>2020</td>
-      <td>ApJ</td>
-      <td>The Spectacular Ultraviolet Flash from the Pec...</td>
-      <td>https://ui.adsabs.harvard.edu/abs/2020ApJ...89...</td>
-    </tr>
-    <tr>
-      <th>3</th>
+      <th>8</th>
       <td>Gillanders, J. H., Sim, S. A., Smartt, S. J.</td>
       <td>2020</td>
       <td>MNRAS</td>
@@ -708,15 +755,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2020MNRAS.49...</td>
     </tr>
     <tr>
-      <th>4</th>
-      <td>Bouquin, Daina R., Chivvis, Daniel A., Henneke...</td>
-      <td>2020</td>
-      <td>ApJS</td>
-      <td>Credit Lost: Two Decades of Software Citation ...</td>
-      <td>https://ui.adsabs.harvard.edu/abs/2020ApJS..24...</td>
-    </tr>
-    <tr>
-      <th>5</th>
+      <th>9</th>
       <td>Tomasella, Lina, Stritzinger, Maximilian, Bene...</td>
       <td>2020</td>
       <td>MNRAS</td>
@@ -724,7 +763,23 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2020MNRAS.49...</td>
     </tr>
     <tr>
-      <th>6</th>
+      <th>10</th>
+      <td>Miller, A. A., Magee, M. R., Polin, A., et al.</td>
+      <td>2020</td>
+      <td>ApJ</td>
+      <td>The Spectacular Ultraviolet Flash from the Pec...</td>
+      <td>https://ui.adsabs.harvard.edu/abs/2020ApJ...89...</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Bouquin, Daina R., Chivvis, Daniel A., Henneke...</td>
+      <td>2020</td>
+      <td>ApJS</td>
+      <td>Credit Lost: Two Decades of Software Citation ...</td>
+      <td>https://ui.adsabs.harvard.edu/abs/2020ApJS..24...</td>
+    </tr>
+    <tr>
+      <th>12</th>
       <td>Livneh, Ran, Katz, Boaz</td>
       <td>2020</td>
       <td>MNRAS</td>
@@ -732,7 +787,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2020MNRAS.49...</td>
     </tr>
     <tr>
-      <th>7</th>
+      <th>13</th>
       <td>Kawabata, Miho, Maeda, Keiichi, Yamanaka, Masa...</td>
       <td>2020</td>
       <td>ApJ</td>
@@ -740,7 +795,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2020ApJ...89...</td>
     </tr>
     <tr>
-      <th>8</th>
+      <th>14</th>
       <td>Srivastav, Shubham, Smartt, Stephen J., Leloud...</td>
       <td>2020</td>
       <td>ApJL</td>
@@ -748,7 +803,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2020ApJ...89...</td>
     </tr>
     <tr>
-      <th>9</th>
+      <th>15</th>
       <td>Magee, M. R., Maguire, K., Kotak, R., et al.</td>
       <td>2020</td>
       <td>A&amp;A</td>
@@ -756,7 +811,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2020A&amp;A...63...</td>
     </tr>
     <tr>
-      <th>10</th>
+      <th>16</th>
       <td>Vogl, C., Kerzendorf, W. E., Sim, S. A., et al.</td>
       <td>2020</td>
       <td>A&amp;A</td>
@@ -764,7 +819,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2020A&amp;A...63...</td>
     </tr>
     <tr>
-      <th>11</th>
+      <th>17</th>
       <td>McBrien, Owen R., Smartt, Stephen J., Chen, Ti...</td>
       <td>2019</td>
       <td>ApJL</td>
@@ -772,7 +827,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2019ApJ...88...</td>
     </tr>
     <tr>
-      <th>12</th>
+      <th>18</th>
       <td>Watson, Darach, Hansen, Camilla J., Selsing, J...</td>
       <td>2019</td>
       <td>Natur</td>
@@ -780,7 +835,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2019Natur.57...</td>
     </tr>
     <tr>
-      <th>13</th>
+      <th>19</th>
       <td>Jacobson-Galán, Wynn V., Foley, Ryan J., Schwa...</td>
       <td>2019</td>
       <td>MNRAS</td>
@@ -788,7 +843,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2019MNRAS.48...</td>
     </tr>
     <tr>
-      <th>14</th>
+      <th>20</th>
       <td>Noebauer, Ulrich M., Sim, Stuart A.</td>
       <td>2019</td>
       <td>LRCA</td>
@@ -796,7 +851,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2019LRCA.......</td>
     </tr>
     <tr>
-      <th>15</th>
+      <th>21</th>
       <td>Chatzopoulos, E., Weide, K.</td>
       <td>2019</td>
       <td>ApJ</td>
@@ -804,7 +859,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2019ApJ...87...</td>
     </tr>
     <tr>
-      <th>16</th>
+      <th>22</th>
       <td>Mulligan, Brian W., Zhang, Kaicheng, Wheeler, ...</td>
       <td>2019</td>
       <td>MNRAS</td>
@@ -812,7 +867,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2019MNRAS.48...</td>
     </tr>
     <tr>
-      <th>17</th>
+      <th>23</th>
       <td>Magee, M. R., Sim, S. A., Kotak, R., et al.</td>
       <td>2019</td>
       <td>A&amp;A</td>
@@ -820,7 +875,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2019A&amp;A...62...</td>
     </tr>
     <tr>
-      <th>18</th>
+      <th>24</th>
       <td>Heringer, E., van Kerkwijk, M. H., Sim, S. A.,...</td>
       <td>2019</td>
       <td>ApJ</td>
@@ -828,7 +883,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2019ApJ...87...</td>
     </tr>
     <tr>
-      <th>19</th>
+      <th>25</th>
       <td>Izzo, L., de Ugarte Postigo, A., Maeda, K., et...</td>
       <td>2019</td>
       <td>Natur</td>
@@ -836,7 +891,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2019Natur.56...</td>
     </tr>
     <tr>
-      <th>20</th>
+      <th>26</th>
       <td>Vogl, C., Sim, S. A., Noebauer, U. M., et al.</td>
       <td>2019</td>
       <td>A&amp;A</td>
@@ -844,7 +899,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2019A&amp;A...62...</td>
     </tr>
     <tr>
-      <th>21</th>
+      <th>27</th>
       <td>Ergon, M., Fransson, C., Jerkstrand, A., et al.</td>
       <td>2018</td>
       <td>A&amp;A</td>
@@ -852,7 +907,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2018A&amp;A...62...</td>
     </tr>
     <tr>
-      <th>22</th>
+      <th>28</th>
       <td>Barna, Barnabás, Szalai, Tamás, Kerzendorf, Wo...</td>
       <td>2018</td>
       <td>MNRAS</td>
@@ -860,7 +915,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2018MNRAS.48...</td>
     </tr>
     <tr>
-      <th>23</th>
+      <th>29</th>
       <td>Prentice, S. J., Maguire, K., Smartt, S. J., e...</td>
       <td>2018</td>
       <td>ApJL</td>
@@ -868,7 +923,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2018ApJ...86...</td>
     </tr>
     <tr>
-      <th>24</th>
+      <th>30</th>
       <td>Beaujean, Frederik, Eggers, Hans C., Kerzendor...</td>
       <td>2018</td>
       <td>MNRAS</td>
@@ -876,7 +931,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2018MNRAS.47...</td>
     </tr>
     <tr>
-      <th>25</th>
+      <th>31</th>
       <td>Magee, M. R., Sim, S. A., Kotak, R., et al.</td>
       <td>2018</td>
       <td>A&amp;A</td>
@@ -884,7 +939,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2018A&amp;A...61...</td>
     </tr>
     <tr>
-      <th>26</th>
+      <th>32</th>
       <td>Röpke, Friedrich K., Sim, Stuart A.</td>
       <td>2018</td>
       <td>SSRv</td>
@@ -892,7 +947,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2018SSRv..21...</td>
     </tr>
     <tr>
-      <th>27</th>
+      <th>33</th>
       <td>Barna, Barnabás, Szalai, Tamás, Kromer, Markus...</td>
       <td>2017</td>
       <td>MNRAS</td>
@@ -900,7 +955,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2017MNRAS.47...</td>
     </tr>
     <tr>
-      <th>28</th>
+      <th>34</th>
       <td>Smartt, S. J., Chen, T. -W., Jerkstrand, A., e...</td>
       <td>2017</td>
       <td>Natur</td>
@@ -908,7 +963,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2017Natur.55...</td>
     </tr>
     <tr>
-      <th>29</th>
+      <th>35</th>
       <td>Heringer, E., van Kerkwijk, M. H., Sim, S. A.,...</td>
       <td>2017</td>
       <td>ApJ</td>
@@ -916,7 +971,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2017ApJ...84...</td>
     </tr>
     <tr>
-      <th>30</th>
+      <th>36</th>
       <td>Magee, M. R., Kotak, R., Sim, S. A., et al.</td>
       <td>2017</td>
       <td>A&amp;A</td>
@@ -924,7 +979,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2017A&amp;A...60...</td>
     </tr>
     <tr>
-      <th>31</th>
+      <th>37</th>
       <td>Boyle, Aoife, Sim, Stuart A., Hachinger, Steph...</td>
       <td>2017</td>
       <td>A&amp;A</td>
@@ -932,7 +987,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2017A&amp;A...59...</td>
     </tr>
     <tr>
-      <th>32</th>
+      <th>38</th>
       <td>Noebauer, U. M., Taubenberger, S., Blinnikov, ...</td>
       <td>2016</td>
       <td>MNRAS</td>
@@ -940,7 +995,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2016MNRAS.46...</td>
     </tr>
     <tr>
-      <th>33</th>
+      <th>39</th>
       <td>Inserra, C., Bulla, M., Sim, S. A., et al.</td>
       <td>2016</td>
       <td>ApJ</td>
@@ -948,7 +1003,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2016ApJ...83...</td>
     </tr>
     <tr>
-      <th>34</th>
+      <th>40</th>
       <td>Szalai, Tamás, Vinkó, József, Nagy, Andrea P.,...</td>
       <td>2016</td>
       <td>MNRAS</td>
@@ -956,7 +1011,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2016MNRAS.46...</td>
     </tr>
     <tr>
-      <th>35</th>
+      <th>41</th>
       <td>Magee, M. R., Kotak, R., Sim, S. A., et al.</td>
       <td>2016</td>
       <td>A&amp;A</td>
@@ -964,7 +1019,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2016A&amp;A...58...</td>
     </tr>
     <tr>
-      <th>36</th>
+      <th>42</th>
       <td>Dubernet, M. L., Antony, B. K., Ba, Y. A., et al.</td>
       <td>2016</td>
       <td>JPhB</td>
@@ -972,7 +1027,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2016JPhB...4...</td>
     </tr>
     <tr>
-      <th>37</th>
+      <th>43</th>
       <td>Parrent, J. T., Howell, D. A., Fesen, R. A., e...</td>
       <td>2016</td>
       <td>MNRAS</td>
@@ -980,7 +1035,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2016MNRAS.45...</td>
     </tr>
     <tr>
-      <th>38</th>
+      <th>44</th>
       <td>Young, P. R., Dere, K. P., Landi, E., et al.</td>
       <td>2016</td>
       <td>JPhB</td>
@@ -988,7 +1043,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2016JPhB...4...</td>
     </tr>
     <tr>
-      <th>39</th>
+      <th>45</th>
       <td>Noebauer, U. M., Sim, S. A.</td>
       <td>2015</td>
       <td>MNRAS</td>
@@ -996,7 +1051,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2015MNRAS.45...</td>
     </tr>
     <tr>
-      <th>40</th>
+      <th>46</th>
       <td>Matthews, J. H., Knigge, C., Long, K. S., et al.</td>
       <td>2015</td>
       <td>MNRAS</td>
@@ -1004,7 +1059,7 @@ div.rendered_html tbody tr:hover {
       <td>https://ui.adsabs.harvard.edu/abs/2015MNRAS.45...</td>
     </tr>
     <tr>
-      <th>41</th>
+      <th>47</th>
       <td>Kerzendorf, Wolfgang E., Sim, Stuart A.</td>
       <td>2014</td>
       <td>MNRAS</td>
@@ -1014,14 +1069,6 @@ div.rendered_html tbody tr:hover {
   </tbody>
 </table>
 </div></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
-</pre></div>
 </div>
 </div>
 

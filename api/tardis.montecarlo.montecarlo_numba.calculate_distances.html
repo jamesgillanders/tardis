@@ -7,12 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tardis.montecarlo.formal_integral module &mdash; TARDIS v3.0.dev1</title>
+  <title>tardis.montecarlo.montecarlo_numba.calculate_distances module &mdash; TARDIS v3.0.dev3991</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
   <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
 
@@ -33,6 +35,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -44,8 +47,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="tardis.montecarlo.montecarlo module" href="tardis.montecarlo.montecarlo.html" />
-    <link rel="prev" title="tardis.montecarlo.base module" href="tardis.montecarlo.base.html" />
+    <link rel="next" title="tardis.montecarlo.montecarlo_numba.estimators module" href="tardis.montecarlo.montecarlo_numba.estimators.html" />
+    <link rel="prev" title="tardis.montecarlo.montecarlo_numba.base module" href="tardis.montecarlo.montecarlo_numba.base.html" />
     <link href="../_static/tardis.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -71,7 +74,7 @@
             
             
               <div class="version">
-                3.0.dev1
+                3.0.dev3991
               </div>
             
           
@@ -121,6 +124,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../team_and_governance/index.html">Team and Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../credits.html">Credits &amp; Publication Policies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sponsors.html">Sponsors</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing to TARDIS</span></p>
 <ul>
@@ -209,13 +213,15 @@
         
           <li><a href="tardis.montecarlo.html">tardis.montecarlo package</a> &raquo;</li>
         
-      <li>tardis.montecarlo.formal_integral module</li>
+          <li><a href="tardis.montecarlo.montecarlo_numba.html">tardis.montecarlo.montecarlo_numba package</a> &raquo;</li>
+        
+      <li>tardis.montecarlo.montecarlo_numba.calculate_distances module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/tardis.montecarlo.formal_integral.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/tardis.montecarlo.montecarlo_numba.calculate_distances.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -252,8 +258,68 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="tardis-montecarlo-formal-integral-module">
-<h1>tardis.montecarlo.formal_integral module<a class="headerlink" href="#tardis-montecarlo-formal-integral-module" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-tardis.montecarlo.montecarlo_numba.calculate_distances">
+<span id="tardis-montecarlo-montecarlo-numba-calculate-distances-module"></span><h1>tardis.montecarlo.montecarlo_numba.calculate_distances module<a class="headerlink" href="#module-tardis.montecarlo.montecarlo_numba.calculate_distances" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="tardis.montecarlo.montecarlo_numba.calculate_distances.calculate_distance_boundary">
+<span class="sig-prename descclassname"><span class="pre">tardis.montecarlo.montecarlo_numba.calculate_distances.</span></span><span class="sig-name descname"><span class="pre">calculate_distance_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_inner</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_outer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tardis/montecarlo/montecarlo_numba/calculate_distances.html#calculate_distance_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tardis.montecarlo.montecarlo_numba.calculate_distances.calculate_distance_boundary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate distance to shell boundary in cm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>r</strong><span class="classifier">float</span></dt><dd><p>radial coordinate of the RPacket</p>
+</dd>
+<dt><strong>mu</strong><span class="classifier">float</span></dt><dd><p>cosine of the direction of movement</p>
+</dd>
+<dt><strong>r_inner</strong><span class="classifier">float</span></dt><dd><p>inner radius of current shell</p>
+</dd>
+<dt><strong>r_outer</strong><span class="classifier">float</span></dt><dd><p>outer radius of current shell</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tardis.montecarlo.montecarlo_numba.calculate_distances.calculate_distance_electron">
+<span class="sig-prename descclassname"><span class="pre">tardis.montecarlo.montecarlo_numba.calculate_distances.</span></span><span class="sig-name descname"><span class="pre">calculate_distance_electron</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">electron_density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tardis/montecarlo/montecarlo_numba/calculate_distances.html#calculate_distance_electron"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tardis.montecarlo.montecarlo_numba.calculate_distances.calculate_distance_electron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate distance to Thomson Scattering</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>electron_density</strong><span class="classifier">float</span></dt><dd></dd>
+<dt><strong>tau_event</strong><span class="classifier">float</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tardis.montecarlo.montecarlo_numba.calculate_distances.calculate_distance_line">
+<span class="sig-prename descclassname"><span class="pre">tardis.montecarlo.montecarlo_numba.calculate_distances.</span></span><span class="sig-name descname"><span class="pre">calculate_distance_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r_packet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comov_nu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_last_line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu_line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_explosion</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tardis/montecarlo/montecarlo_numba/calculate_distances.html#calculate_distance_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tardis.montecarlo.montecarlo_numba.calculate_distances.calculate_distance_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate distance until RPacket is in resonance with the next line</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>r_packet</strong><span class="classifier">tardis.montecarlo.montecarlo_numba.r_packet.RPacket</span></dt><dd></dd>
+<dt><strong>comov_nu</strong><span class="classifier">float</span></dt><dd><p>comoving frequency at the CURRENT position of the RPacket</p>
+</dd>
+<dt><strong>is_last_line</strong><span class="classifier">bool</span></dt><dd><p>return MISS_DISTANCE if at the end of the line list</p>
+</dd>
+<dt><strong>nu_line</strong><span class="classifier">float</span></dt><dd><p>line to check the distance to</p>
+</dd>
+<dt><strong>time_explosion</strong><span class="classifier">float</span></dt><dd><p>time since explosion in seconds</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tardis.montecarlo.montecarlo_numba.calculate_distances.calculate_distance_line_full_relativity">
+<span class="sig-prename descclassname"><span class="pre">tardis.montecarlo.montecarlo_numba.calculate_distances.</span></span><span class="sig-name descname"><span class="pre">calculate_distance_line_full_relativity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nu_line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_explosion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_packet</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tardis/montecarlo/montecarlo_numba/calculate_distances.html#calculate_distance_line_full_relativity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tardis.montecarlo.montecarlo_numba.calculate_distances.calculate_distance_line_full_relativity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 
 
@@ -262,8 +328,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="tardis.montecarlo.montecarlo.html" class="btn btn-neutral float-right" title="tardis.montecarlo.montecarlo module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="tardis.montecarlo.base.html" class="btn btn-neutral float-left" title="tardis.montecarlo.base module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tardis.montecarlo.montecarlo_numba.estimators.html" class="btn btn-neutral float-right" title="tardis.montecarlo.montecarlo_numba.estimators module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tardis.montecarlo.montecarlo_numba.base.html" class="btn btn-neutral float-left" title="tardis.montecarlo.montecarlo_numba.base module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

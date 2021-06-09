@@ -1,0 +1,69 @@
+.. |ZENODO| replace:: kerzendorf_wolfgang_2021_4903992
+
+.. code-block:: bibtex
+
+    @software{kerzendorf_wolfgang_2021_4903992,
+      author       = {Kerzendorf, Wolfgang and
+                      Sim, Stuart and
+                      Vogl, Christian and
+                      Williamson, Marc and
+                      Pássaro, Ezequiel and
+                      Flörs, Andreas and
+                      Camacho, Yssa and
+                      Jančauskas, Vytautas and
+                      Harpole, Alice and
+                      Nöbauer, Ulrich and
+                      Lietzau, Stefan and
+                      Mishin, Mikhail and
+                      Tsamis, Fotis and
+                      Boyle, Aoife and
+                      Shingles, Luke and
+                      Gupta, Vaibhav and
+                      Desai, Karan and
+                      Klauser, Michael and
+                      Beaujean, Frederik and
+                      Suban-Loewen, Adam and
+                      Heringer, Epson and
+                      Barna, Barnabás and
+                      Gautam, Gaurav and
+                      Barbosa, Talytha and
+                      Patel, Maryam and
+                      Varanasi, Kaushik and
+                      Eweis, Youssef and
+                      Reinecke, Martin and
+                      Bylund, Tomas and
+                      Bentil, Laud and
+                      Eguren, Jordi and
+                      Livneh, Ran and
+                      Singhal, Jaladh and
+                      O'Brien, Jack and
+                      Rajagopalan, Srinath and
+                      Jain, Rinkle and
+                      Reichenbach, John and
+                      Mishra, Sashank and
+                      Singh, Sourav and
+                      Sofiatti, Caroline and
+                      Selsing, Jonatan and
+                      Kowalski, Nathan and
+                      Savel, Arjun and
+                      Talegaonkar, Chinmay and
+                      Patel, Pratik and
+                      Patra, Nilesh and
+                      Nayak, Ashwin and
+                      Kumar, Atul and
+                      Sarafina, Nance and
+                      Gillanders, James and
+                      Sharma, Sampark and
+                      Wahi, Ujjwal and
+                      Dasgupta, Debajyoti and
+                      Magee, Mark and
+                      Yap, Kevin and
+                      Gupta, Suyash},
+      title        = {tardis-sn/tardis: TARDIS v3.0.dev3983},
+      month        = jun,
+      year         = 2021,
+      publisher    = {Zenodo},
+      version      = {v3.0.dev3983},
+      doi          = {10.5281/zenodo.4903992},
+      url          = {https://doi.org/10.5281/zenodo.4903992}
+    }
