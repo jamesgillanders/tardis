@@ -1,8 +1,8 @@
-.. |ZENODO| replace:: kerzendorf_wolfgang_2021_4995779
+.. |ZENODO| replace:: kerzendorf_wolfgang_2021_5034859
 
 .. code-block:: bibtex
 
-    @software{kerzendorf_wolfgang_2021_4995779,
+    @software{kerzendorf_wolfgang_2021_5034859,
       author       = {Kerzendorf, Wolfgang and
                       Sim, Stuart and
                       Vogl, Christian and
@@ -74,11 +74,11 @@
                       Singhal, Jaladh and
                       Cawley, Kevin and
                       Fullard, Andrew},
-      title        = {tardis-sn/tardis: TARDIS v3.0.dev4010},
+      title        = {tardis-sn/tardis: TARDIS v3.0.dev4019},
       month        = jun,
       year         = 2021,
       publisher    = {Zenodo},
-      version      = {v3.0.dev4010},
-      doi          = {10.5281/zenodo.4995779},
-      url          = {https://doi.org/10.5281/zenodo.4995779}
+      version      = {v3.0.dev4019},
+      doi          = {10.5281/zenodo.5034859},
+      url          = {https://doi.org/10.5281/zenodo.5034859}
     }
