@@ -1,8 +1,8 @@
-.. |ZENODO| replace:: kerzendorf_wolfgang_2021_5111909
+.. |ZENODO| replace:: kerzendorf_wolfgang_2021_5135060
 
 .. code-block:: bibtex
 
-    @software{kerzendorf_wolfgang_2021_5111909,
+    @software{kerzendorf_wolfgang_2021_5135060,
       author       = {Kerzendorf, Wolfgang and
                       Sim, Stuart and
                       Vogl, Christian and
@@ -33,52 +33,52 @@
                       Barbosa, Talytha and
                       Patel, Maryam and
                       Varanasi, Kaushik and
-                      Gillanders, James and
                       Sondhi, Dhruv and
+                      Gillanders, James and
                       O'Brien, Jack and
                       Reinecke, Martin and
                       Eweis, Youssef and
                       Bylund, Tomas and
-                      Savel, Arjun and
                       Bentil, Laud and
+                      Savel, Arjun and
                       Eguren, Jordi and
                       Alam, Arib and
                       Magee, Mark and
-                      Livneh, Ran and
-                      Yu, Jenny and
                       Arya, Atharva and
-                      Rajagopalan, Srinath and
+                      Yu, Jenny and
+                      Livneh, Ran and
                       Mishra, Sashank and
-                      Floers, Andreas and
-                      Reichenbach, John and
+                      Rajagopalan, Srinath and
                       Jain, Rinkle and
-                      Brar, Antreev and
+                      Reichenbach, John and
+                      Floers, Andreas and
                       Singh, Sourav and
+                      Brar, Antreev and
+                      Kowalski, Nathan and
+                      Sofiatti, Caroline and
                       Selsing, Jonatan and
                       Talegaonkar, Chinmay and
-                      Sofiatti, Caroline and
-                      Kowalski, Nathan and
+                      Wahi, Ujjwal and
+                      Patel, Pratik and
+                      Singh Rathore, Parikshit and
                       Patra, Nilesh and
-                      Gupta, Suyash and
-                      Aggarwal, Yash and
-                      Sandler, Morgan and
                       Sarafina, Nance and
+                      Sandler, Morgan and
+                      Gupta, Suyash and
+                      Yap, Kevin and
+                      Sharma, Sampark and
+                      Aggarwal, Yash and
                       Volodin, Dmitry and
                       Dasgupta, Debajyoti and
                       Kolliboyina, Chaitanya and
-                      Wahi, Ujjwal and
-                      Yap, Kevin and
-                      Kharkar, Atharwa and
-                      Singh Rathore, Parikshit and
-                      Nayak U, Ashwin and
-                      Patel, Pratik and
                       Kumar, Atul and
-                      Sharma, Sampark},
-      title        = {tardis-sn/tardis: TARDIS v2021.7.18.0},
+                      Nayak U, Ashwin and
+                      Kharkar, Atharwa},
+      title        = {tardis-sn/tardis: TARDIS v2021.7.25.0},
       month        = jul,
       year         = 2021,
       publisher    = {Zenodo},
-      version      = {release-2021.7.18.0},
-      doi          = {10.5281/zenodo.5111909},
-      url          = {https://doi.org/10.5281/zenodo.5111909}
+      version      = {release-2021.7.25.0},
+      doi          = {10.5281/zenodo.5135060},
+      url          = {https://doi.org/10.5281/zenodo.5135060}
     }
