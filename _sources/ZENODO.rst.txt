@@ -1,8 +1,8 @@
-.. |ZENODO| replace:: kerzendorf_wolfgang_2021_5150917
+.. |ZENODO| replace:: kerzendorf_wolfgang_2021_5168863
 
 .. code-block:: bibtex
 
-    @software{kerzendorf_wolfgang_2021_5150917,
+    @software{kerzendorf_wolfgang_2021_5168863,
       author       = {Kerzendorf, Wolfgang and
                       Sim, Stuart and
                       Vogl, Christian and
@@ -31,17 +31,17 @@
                       Singhal, Jaladh and
                       Smith, Isaac and
                       Barbosa, Talytha and
-                      Patel, Maryam and
                       Sondhi, Dhruv and
+                      Patel, Maryam and
                       Varanasi, Kaushik and
                       Gillanders, James and
                       O'Brien, Jack and
                       Reinecke, Martin and
                       Eweis, Youssef and
                       Bylund, Tomas and
+                      Arya, Atharva and
                       Savel, Arjun and
                       Bentil, Laud and
-                      Arya, Atharva and
                       Eguren, Jordi and
                       Alam, Arib and
                       Magee, Mark and
@@ -74,11 +74,11 @@
                       Patel, Pratik and
                       Kharkar, Atharwa and
                       Sharma, Sampark},
-      title        = {tardis-sn/tardis: TARDIS v2021.8.1.0},
+      title        = {tardis-sn/tardis: TARDIS v2021.8.8.0},
       month        = aug,
       year         = 2021,
       publisher    = {Zenodo},
-      version      = {release-2021.8.1.0},
-      doi          = {10.5281/zenodo.5150917},
-      url          = {https://doi.org/10.5281/zenodo.5150917}
+      version      = {release-2021.8.8.0},
+      doi          = {10.5281/zenodo.5168863},
+      url          = {https://doi.org/10.5281/zenodo.5168863}
     }
