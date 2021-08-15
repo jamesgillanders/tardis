@@ -1,8 +1,8 @@
-.. |ZENODO| replace:: kerzendorf_wolfgang_2021_5168863
+.. |ZENODO| replace:: kerzendorf_wolfgang_2021_5202808
 
 .. code-block:: bibtex
 
-    @software{kerzendorf_wolfgang_2021_5168863,
+    @software{kerzendorf_wolfgang_2021_5202808,
       author       = {Kerzendorf, Wolfgang and
                       Sim, Stuart and
                       Vogl, Christian and
@@ -74,11 +74,11 @@
                       Patel, Pratik and
                       Kharkar, Atharwa and
                       Sharma, Sampark},
-      title        = {tardis-sn/tardis: TARDIS v2021.8.8.0},
+      title        = {tardis-sn/tardis: TARDIS v2021.8.15.0},
       month        = aug,
       year         = 2021,
       publisher    = {Zenodo},
-      version      = {release-2021.8.8.0},
-      doi          = {10.5281/zenodo.5168863},
-      url          = {https://doi.org/10.5281/zenodo.5168863}
+      version      = {release-2021.8.15.0},
+      doi          = {10.5281/zenodo.5202808},
+      url          = {https://doi.org/10.5281/zenodo.5202808}
     }
