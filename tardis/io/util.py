@@ -1,22 +1,22 @@
 # Utility functions for the IO part of TARDIS
 
+import collections.abc as collections_abc
+import hashlib
+import logging
 import os
 import re
-import logging
-
-import pandas as pd
-import numpy as np
-import collections
+import shutil
 from collections import OrderedDict
+from functools import lru_cache
 
-import requests
+import numpy as np
+import pandas as pd
 import yaml
-from tqdm.auto import tqdm
-
-from tardis import constants as const
 from astropy import units as u
+from astropy.utils.data import download_file
 
 from tardis import __path__ as TARDIS_PATH
+from tardis import constants as const
 
 logger = logging.getLogger(__name__)
 
@@ -138,10 +138,6 @@ def yaml_load_file(filename, loader=yaml.Loader):
         return yaml.load(stream, Loader=loader)
 
 
-def yaml_load_config_file(filename):
-    return yaml_load_file(filename, YAMLLoader)
-
-
 def traverse_configs(base, other, func, *args):
     """
     Recursively traverse a base dict or list along with another one
@@ -159,11 +155,11 @@ def traverse_configs(base, other, func, *args):
     args :
         Arguments passed into `func`
     """
-    if isinstance(base, collections.Mapping):
+    if isinstance(base, collections_abc.Mapping):
         for k in base:
             traverse_configs(base[k], other[k], func, *args)
     elif (
-        isinstance(base, collections.Iterable)
+        isinstance(base, collections_abc.Iterable)
         and not isinstance(base, basestring)
         and not hasattr(base, "shape")
     ):
@@ -246,7 +242,7 @@ class HDFWriterMixin(object):
                     path_or_buf, complevel=complevel, complib=complib
                 )
             except TypeError as e:
-                if e.message == "Expected bytes, got HDFStore":
+                if str(e) == "Expected bytes, got HDFStore":
                     # when path_or_buf is an HDFStore buffer instead
                     logger.debug(
                         "Expected bytes, got HDFStore. Changing path to HDF buffer"
@@ -278,7 +274,7 @@ class HDFWriterMixin(object):
                         pd.DataFrame(value).to_hdf(buf, os.path.join(path, key))
                 else:
                     pd.DataFrame(value).to_hdf(buf, os.path.join(path, key))
-            else:  # value is a TARDIS object like model, runner or plasma
+            else:  # value is a TARDIS object like model, transport or plasma
                 try:
                     value.to_hdf(buf, path, name=key, overwrite=overwrite)
                 except AttributeError:
@@ -391,33 +387,34 @@ class PlasmaWriterMixin(HDFWriterMixin):
         )
 
 
-def download_from_url(url, dst):
-    """
-    kindly used from https://gist.github.com/wy193777/0e2a4932e81afc6aa4c8f7a2984f34e2
-    @param: url to download file
-    @param: dst place to put the file
+@lru_cache(maxsize=None)
+def download_from_url(url, dst, checksum, src=None, retries=3):
+    """Download files from a given URL
+
+    Parameters
+    ----------
+    url : str
+        URL to download from
+    dst : str
+        Destination folder for the downloaded file
+    src : tuple
+        List of URLs to use as mirrors
     """
 
-    file_size = int(requests.head(url).headers["Content-Length"])
-    if os.path.exists(dst):
-        first_byte = os.path.getsize(dst)
+    cached_file_path = download_file(url, sources=src, pkgname="tardis")
+
+    with open(cached_file_path, "rb") as f:
+        new_checksum = hashlib.md5(f.read()).hexdigest()
+
+    if checksum == new_checksum:
+        shutil.copy(cached_file_path, dst)
+
+    elif checksum != new_checksum and retries > 0:
+        retries -= 1
+        logger.warning(
+            f"Incorrect checksum, retrying... ({retries+1} attempts remaining)"
+        )
+        download_from_url(url, dst, checksum, src, retries)
+
     else:
-        first_byte = 0
-    if first_byte >= file_size:
-        return file_size
-    header = {f"Range": "bytes={first_byte}-{file_size}"}
-    pbar = tqdm(
-        total=file_size,
-        initial=first_byte,
-        unit="B",
-        unit_scale=True,
-        desc=url.split("/")[-1],
-    )
-    req = requests.get(url, headers=header, stream=True)
-    with open(dst, "ab") as f:
-        for chunk in req.iter_content(chunk_size=1024):
-            if chunk:
-                f.write(chunk)
-                pbar.update(1024)
-    pbar.close()
-    return file_size
+        logger.error("Maximum number of retries reached. Aborting")

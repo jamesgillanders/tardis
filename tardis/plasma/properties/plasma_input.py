@@ -1,11 +1,15 @@
-from tardis.plasma.properties.base import Input, ArrayInput, DataFrameInput
+from tardis.plasma.properties.base import (
+    ArrayInput,
+    Input,
+)
 
 __all__ = [
     "TRadiative",
     "DilutionFactor",
     "AtomicData",
     "Abundance",
-    "Density",
+    "NumberDensity",
+    "IsotopeAbundance",
     "TimeExplosion",
     "JBlueEstimator",
     "LinkTRadTElectron",
@@ -14,6 +18,8 @@ __all__ = [
     "TInner",
     "Volume",
     "ContinuumInteractionSpecies",
+    "NLTEIonizationSpecies",
+    "NLTEExcitationSpecies",
 ]
 
 
@@ -62,16 +68,15 @@ class Abundance(Input):
     outputs = ("abundance",)
 
 
-class Density(ArrayInput):
+class IsotopeAbundance(Input):
     """
     Attributes
     ----------
-    density : Numpy array, dtype float
-      Total density values
+    isotope_abundance : Numpy array, dtype float
+        Fractional abundance of isotopes
     """
 
-    outputs = ("density",)
-    latex_name = (r"\rho",)
+    outputs = ("isotope_abundance",)
 
 
 class TimeExplosion(Input):
@@ -136,3 +141,25 @@ class ContinuumInteractionSpecies(Input):
     """
 
     outputs = ("continuum_interaction_species",)
+
+
+class NLTEIonizationSpecies(Input):
+
+    outputs = ("nlte_ionization_species",)
+
+
+class NLTEExcitationSpecies(Input):
+
+    outputs = ("nlte_excitation_species",)
+
+
+class NumberDensity(Input):
+    """
+    Attributes
+    ----------
+    number_density : Pandas DataFrame, dtype float
+                     Indexed by atomic number, columns corresponding to zones
+    """
+
+    outputs = ("number_density",)
+    latex_name = ("N_{i}",)

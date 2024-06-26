@@ -6,13 +6,15 @@ Packet Propagation
 
 The bulk of a Monte Carlo Radiative Transfer calculation is spent on
 determining the propagation history of the different packets. After a packet is
-initialized (see :ref:`initialization`), it is launched and may then perform interactions with the
+initialized (see :doc:`initialization`), it is launched and may then perform interactions with the
 surrounding material. This occurs again in a probabilistic manner. The packet
 propagation is followed until it escapes through the outer boundary of the
 computational domain, at which point the packet contributes to the synthetic
 spectrum, the main product of a TARDIS calculation. The different spectral
 features are simply a combined product of the changes in the packet properties
 induced in the radiation-matter interactions.
+
+.. _spherical-domain:
 
 Propagation in a Spherical Domain
 =================================
@@ -155,6 +157,7 @@ When a packet is moved into a new cell, as mentioned before, it is moved to the 
 boundary, the plasma properties are recalculated, and the propagation direction of the packet is updated (using
 :math:`\mu_f = \frac{l + r_i \mu_i}{r_f}`).
 
+.. _physical-interactions:
 
 Physical Interactions
 ---------------------
@@ -162,12 +165,14 @@ Physical Interactions
 As a packet propagates through the computational domain, physical radiation-matter interactions can trigger changes
 in the packet properties. The probability that a photon/packet will interact with matter is characterized by its
 optical depth :math:`\tau`; the probability that a packet will have interacted after going through an optical depth
-:math:`\Delta \tau` is :math:`1-e^{-\Delta \tau}`. To model this (see :ref:`Random Sampling <randomsampling>`), the
+:math:`\Delta \tau` is :math:`1-e^{-\Delta \tau}` (see :ref:`opacity` for more). To model this
+(see :ref:`Random Sampling <randomsampling>`), the
 packet is assigned a random value of optical depth :math:`\tau_\mathrm{interaction} = -\log z` (for another random
 :math:`z` between 0 and 1), and upon reaching that optical depth, the packet will interact.
 
 TARDIS considers two different radiation-matter interactions within the simulation: electron scattering and atomic
-line interactions. As packets propagate, they accumulate optical depth due to the possibility of going through either
+line interactions (see :ref:`light_and_matter` for a basic introduction to these interactions). As packets propagate,
+they accumulate optical depth due to the possibility of going through either
 of these interactions. Since the main focus of TARDIS is to calculate optical spectra,
 electron-scatterings are treated in the elastic low-energy limit as classical
 Thomson scatterings. In this case, the electron scattering process is frequency-independent. As a consequence to the
@@ -181,9 +186,9 @@ Thomson scattering is calculated by the formula
     \Delta \tau = \sigma_{\mathrm{T}} n_e l.
 
 The Thomson cross section :math:`\sigma_{\mathrm{T}}`, which is a constant,
-appears here. This corresponds to the fact that a packet has a probability of :math:`1-e^{\sigma_{\mathrm{T}} n_e l}`
+appears here. This corresponds to the fact that a packet has a probability of :math:`1-e^{-\sigma_{\mathrm{T}} n_e l}`
 of going through a Thomson scattering prior to traveling a distance :math:`l` (in other words, the probability of the
-packet making it across a distance :math:`l` without scattering is :math:`e^{\sigma_{\mathrm{T}} n_e l}`).
+packet making it across a distance :math:`l` without scattering is :math:`e^{-\sigma_{\mathrm{T}} n_e l}`).
 
 The situation is complicated by the inclusion of frequency-dependent
 bound-bound interactions, i.e. interactions with atomic line transitions.
@@ -260,7 +265,9 @@ interaction with the corresponding atomic line transition. In both of these case
 interaction location, the interaction will be performed (as will be described in the next section), and the process
 of accumulating optical depth starts over. Finally, if the packet reaches the shell boundary before the optical depth
 value necessary for a physical interaction is achieved (as in case III), the packet will be moved to the next cell,
-the plasma properties will be updated, and the accumulation of optical depth will continue in the next cell.
+the plasma properties will be updated, and the accumulation of optical depth will **restart** in the next cell.
+
+.. note:: While it would make physical sense for the accumulation of optical depth to continue between cells until the packet eventually interacts, due to the exponential nature of optical depth and interaction probabilities, both continuing and restarting the accumulation of optical depth between cells can be mathematically shown to yield the same overall statistical results. Restarting the optical depth accumulation is computationally easier, and hence it is the method employed by TARDIS.
 
 Performing an Interaction
 -------------------------

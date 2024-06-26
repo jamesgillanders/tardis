@@ -28,6 +28,7 @@
 import os
 import sys
 import datetime
+import tardis  # FIXME: this import is required by astropy.constants
 from importlib import import_module
 
 try:
@@ -62,6 +63,7 @@ highlight_language = "none"
 # directories to ignore when looking for source files.
 exclude_patterns.append("_templates")
 exclude_patterns.append("_build")
+exclude_patterns.append("**_template.rst")
 exclude_patterns.append("**.ipynb_checkpoints")
 exclude_patterns.append("resources/research_done_using_TARDIS/ads.ipynb")
 
@@ -124,7 +126,7 @@ mathjax2_config = {
 
 nbsphinx_execute_arguments = [
     "--InlineBackend.figure_formats={'svg', 'pdf'}",
-    "--InlineBackend.rc={'figure.dpi': 96}",
+    "--rc figure.dpi=96",
 ]
 
 nbsphinx_prolog = r"""
@@ -132,6 +134,12 @@ nbsphinx_prolog = r"""
 .. raw:: html
     
     <style>
+        /* strip stderr */
+        div.nboutput.container div.output_area.stderr {
+            background: #fdd;
+            display: none;
+        }
+
         .launch-btn {
             background-color: #2980B9;
             border: none;
@@ -161,7 +169,7 @@ nbsphinx_prolog = r"""
     </style>
     
     <div class="admonition note">
-    <p class="note-p">You can interact with this notebook online: <a href="https://mybinder.org/v2/gh/tardis-sn/tardis/HEAD?filepath={{ docname|e }}" class="launch-btn" target="_blank" rel="noopener noreferrer">Launch interactive version</a></p>
+    <p class="note-p">You can interact with this notebook online: <a href="https://mybinder.org/v2/gh/tardis-sn/tardis/HEAD?filepath={{ docname|e }}" class="launch-btn" target="_blank" rel="noopener noreferrer">Launch notebook</a></p>
     </div>
 """
 
@@ -333,52 +341,7 @@ redirects = [
 
 # -- Sphinx hook-ins ---------------------------------------------------------
 
-import re
-import pathlib
-import requests
-import textwrap
-import warnings
 from shutil import copyfile
-
-
-def generate_ZENODO(app):
-    """Creating ZENODO.rst
-    Adapted from: https://astrodata.nyc/posts/2021-04-23-zenodo-sphinx/"""
-    CONCEPT_DOI = "592480"  # See: https://help.zenodo.org/#versioning
-    zenodo_path = pathlib.Path("resources/ZENODO.rst")
-
-    try:
-        headers = {"accept": "application/x-bibtex"}
-        response = requests.get(
-            f"https://zenodo.org/api/records/{CONCEPT_DOI}", headers=headers
-        )
-        response.encoding = "utf-8"
-        citation = re.findall("@software{(.*)\,", response.text)
-        zenodo_record = (
-            f".. |ZENODO| replace:: {citation[0]}\n\n"
-            ".. code-block:: bibtex\n\n"
-            + textwrap.indent(response.text, " " * 4)
-        )
-
-    except Exception as e:
-        warnings.warn(
-            "Failed to retrieve Zenodo record for TARDIS: " f"{str(e)}"
-        )
-
-        not_found_msg = """
-                        Couldn"t retrieve the TARDIS software citation from Zenodo. Get it 
-                        directly from `this link <https://zenodo.org/record/{CONCEPT_DOI}>`_    .
-                        """
-
-        zenodo_record = (
-            ".. |ZENODO| replace:: <TARDIS SOFTWARE CITATION HERE> \n\n"
-            ".. warning:: \n\n" + textwrap.indent(not_found_msg, " " * 4)
-        )
-
-    with open(zenodo_path, "w") as f:
-        f.write(zenodo_record)
-
-    print(zenodo_record)
 
 
 def generate_tutorials_page(app):
@@ -387,13 +350,28 @@ def generate_tutorials_page(app):
 
     for root, dirs, fnames in os.walk("io/"):
         for fname in fnames:
-            if fname.endswith(".ipynb") and "checkpoint" not in fname:
+            if fname.startswith("tutorial_") and fname.endswith(".ipynb") and "checkpoint" not in fname:
                 notebooks += f"\n* :doc:`{root}/{fname[:-6]}`"
 
     title = "Tutorials\n*********\n"
     description = "The following pages contain the TARDIS tutorials:"
 
     with open("tutorials.rst", mode="wt", encoding="utf-8") as f:
+        f.write(f"{title}\n{description}\n{notebooks}")
+
+def generate_how_to_guides_page(app):
+    """Create how_to_guides.rst"""
+    notebooks = ""
+
+    for root, dirs, fnames in os.walk("io/"):
+        for fname in fnames:
+            if fname.startswith("how_to_") and fname.endswith(".ipynb") and "checkpoint" not in fname:
+                notebooks += f"\n* :doc:`{root}/{fname[:-6]}`"
+
+    title = "How-To Guides\n*********\n"
+    description = "The following pages contain the TARDIS how-to guides:"
+
+    with open("how_to_guides.rst", mode="wt", encoding="utf-8") as f:
         f.write(f"{title}\n{description}\n{notebooks}")
 
 
@@ -433,7 +411,7 @@ def create_redirect_files(app, docname):
 
 
 def setup(app):
-    app.connect("builder-inited", generate_ZENODO)
     app.connect("builder-inited", generate_tutorials_page)
+    app.connect("builder-inited", generate_how_to_guides_page)
     app.connect("autodoc-skip-member", autodoc_skip_member)
     app.connect("build-finished", create_redirect_files)

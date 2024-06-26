@@ -1,26 +1,27 @@
 import logging
+from collections import Counter as counter
 
 import numpy as np
 import pandas as pd
-from scipy.special import expn
+import radioactivedecay as rd
+from numba import njit
 from scipy.interpolate import PchipInterpolator
-from collections import Counter as counter
-from tardis import constants as const
+from scipy.special import exp1
 
-from tardis.plasma.properties.base import (
-    ProcessingPlasmaProperty,
-    HiddenPlasmaProperty,
-    BaseAtomicDataProperty,
-)
+from tardis import constants as const
 from tardis.plasma.exceptions import IncompleteAtomicData
+from tardis.plasma.properties.base import (
+    BaseAtomicDataProperty,
+    HiddenPlasmaProperty,
+    ProcessingPlasmaProperty,
+)
 from tardis.plasma.properties.continuum_processes import (
-    get_ground_state_multi_index,
-    K_B,
-    BETA_COLL,
-    H,
     A0,
+    BETA_COLL,
+    K_B,
     M_E,
-    C,
+    H,
+    get_ground_state_multi_index,
 )
 
 logger = logging.getLogger(__name__)
@@ -30,15 +31,17 @@ __all__ = [
     "Lines",
     "LinesLowerLevelIndex",
     "LinesUpperLevelIndex",
-    "AtomicMass",
     "IonizationData",
     "ZetaData",
     "NLTEData",
+    "MacroAtomData",
     "PhotoIonizationData",
     "YgData",
     "YgInterpolator",
     "LevelIdxs2LineIdx",
+    "LevelIdxs2TransitionIdx",
     "TwoPhotonData",
+    "ContinuumInteractionHandler",
 ]
 
 
@@ -68,12 +71,9 @@ class Levels(BaseAtomicDataProperty):
     )
 
     def _filter_atomic_property(self, levels, selected_atoms):
-        return levels
-        # return levels[levels.atomic_number.isin(selected_atoms)]
+        return levels[levels.index.isin(selected_atoms, level="atomic_number")]
 
     def _set_index(self, levels):
-        # levels = levels.set_index(['atomic_number', 'ion_number',
-        #                          'level_number'])
         return (
             levels.index,
             levels["energy"],
@@ -101,6 +101,13 @@ class Lines(BaseAtomicDataProperty):
     # Would like for lines to just be the line_id values
     outputs = ("lines", "nu", "f_lu", "wavelength_cm")
 
+    latex_name = (
+        r"\textrm{lines}",
+        r"\nu",
+        r"f_lu",
+        r"\lambda_{cm}",
+    )
+
     def _filter_atomic_property(self, lines, selected_atoms):
         # return lines[lines.atomic_number.isin(selected_atoms)]
         return lines
@@ -108,6 +115,16 @@ class Lines(BaseAtomicDataProperty):
     def _set_index(self, lines):
         # lines.set_index('line_id', inplace=True)
         return lines, lines["nu"], lines["f_lu"], lines["wavelength_cm"]
+
+
+class MacroAtomData(BaseAtomicDataProperty):
+    outputs = ("macro_atom_data",)
+
+    def _filter_atomic_property(self, macro_atom_data, selected_atoms):
+        return macro_atom_data
+
+    def _set_index(self, macro_atom_data):
+        return macro_atom_data
 
 
 class PhotoIonizationData(ProcessingPlasmaProperty):
@@ -132,6 +149,8 @@ class PhotoIonizationData(ProcessingPlasmaProperty):
         Maps a level MultiIndex (atomic_number, ion_number, level_number) to
         the continuum_idx of the corresponding bound-free continuum (which are
         sorted by decreasing frequency).
+    level_idxs2continuum_idx : pandas.DataFrame, dtype int
+        Maps a source_level_idx destination_level_idx pair to a continuum_idx.
     """
 
     outputs = (
@@ -142,6 +161,7 @@ class PhotoIonizationData(ProcessingPlasmaProperty):
         "energy_i",
         "photo_ion_idx",
         "level2continuum_idx",
+        "level_idxs2continuum_idx",
     )
     latex_name = (
         r"\xi_{\textrm{i}}(\nu)",
@@ -150,12 +170,14 @@ class PhotoIonizationData(ProcessingPlasmaProperty):
         r"\nu_i",
         r"\epsilon_i",
         "",
+        "",
     )
 
     def calculate(self, atomic_data, continuum_interaction_species):
-        photoionization_data = atomic_data.photoionization_data.set_index(
-            ["atomic_number", "ion_number", "level_number"]
-        )
+        # photoionization_data = atomic_data.photoionization_data.set_index(
+        #    ["atomic_number", "ion_number", "level_number"]
+        # )
+        photoionization_data = atomic_data.photoionization_data
         mask_selected_species = photoionization_data.index.droplevel(
             "level_number"
         ).isin(continuum_interaction_species)
@@ -187,6 +209,12 @@ class PhotoIonizationData(ProcessingPlasmaProperty):
             nu_i.sort_values(ascending=False).index,
             name="continuum_idx",
         )
+
+        level_idxs2continuum_idx = photo_ion_idx.copy()
+        level_idxs2continuum_idx["continuum_idx"] = level2continuum_edge_idx
+        level_idxs2continuum_idx = level_idxs2continuum_idx.set_index(
+            ["source_level_idx", "destination_level_idx"]
+        )
         return (
             photoionization_data,
             block_references,
@@ -195,6 +223,134 @@ class PhotoIonizationData(ProcessingPlasmaProperty):
             energy_i,
             photo_ion_idx,
             level2continuum_edge_idx,
+            level_idxs2continuum_idx,
+        )
+
+
+class ContinuumInteractionHandler(ProcessingPlasmaProperty):
+    outputs = (
+        "get_current_bound_free_continua",
+        "determine_bf_macro_activation_idx",
+        "determine_continuum_macro_activation_idx",
+    )
+
+    def calculate(
+        self,
+        photo_ion_cross_sections,
+        level2continuum_idx,
+        photo_ion_idx,
+        k_packet_idx,
+    ):
+        nus = photo_ion_cross_sections.nu.loc[
+            level2continuum_idx.index
+        ]  # Sort by descending frequency
+        nu_mins = nus.groupby(level=[0, 1, 2], sort=False).first().values
+        nu_maxs = nus.groupby(level=[0, 1, 2], sort=False).last().values
+
+        @njit(error_model="numpy", fastmath=True)
+        def get_current_bound_free_continua(nu):
+            """
+            Determine bound-free continua for which absorption is possible.
+
+            Parameters
+            ----------
+            nu : float
+                Comoving frequency of the r-packet.
+
+            Returns
+            -------
+            numpy.ndarray, dtype int
+                Continuum ids for which absorption is possible for frequency `nu`.
+            """
+            # searchsorted would be faster but would need stricter format for photoionization data
+            current_continua = np.where(
+                np.logical_and(nu >= nu_mins, nu <= nu_maxs)
+            )[0]
+            return current_continua
+
+        destination_level_idxs = photo_ion_idx.loc[
+            level2continuum_idx.index, "destination_level_idx"
+        ].values
+
+        @njit(error_model="numpy", fastmath=True)
+        def determine_bf_macro_activation_idx(
+            nu, chi_bf_contributions, active_continua
+        ):
+            """
+            Determine the macro atom activation level after bound-free absorption.
+
+            Parameters
+            ----------
+            nu : float
+                Comoving frequency of the r-packet.
+            chi_bf_contributions : numpy.ndarray, dtype float
+                Cumulative distribution of bound-free opacities at frequency
+                `nu`.
+            active_continua : numpy.ndarray, dtype int
+                Continuum ids for which absorption is possible for frequency `nu`.
+
+            Returns
+            -------
+            float
+                Macro atom activation idx.
+            """
+            # Perform a MC experiment to determine the continuum for absorption
+            index = np.searchsorted(chi_bf_contributions, np.random.random())
+            continuum_id = active_continua[index]
+
+            # Perform a MC experiment to determine whether thermal or
+            # ionization energy is created
+            nu_threshold = nu_mins[continuum_id]
+            fraction_ionization = nu_threshold / nu
+            if (
+                np.random.random() < fraction_ionization
+            ):  # Create ionization energy (i-packet)
+                destination_level_idx = destination_level_idxs[continuum_id]
+            else:  # Create thermal energy (k-packet)
+                destination_level_idx = k_packet_idx
+            return destination_level_idx
+
+        @njit(error_model="numpy", fastmath=True)
+        def determine_continuum_macro_activation_idx(
+            nu, chi_bf, chi_ff, chi_bf_contributions, active_continua
+        ):
+            """
+            Determine the macro atom activation level after a continuum absorption.
+
+            Parameters
+            ----------
+            nu : float
+                Comoving frequency of the r-packet.
+            chi_bf : numpy.ndarray, dtype float
+                Bound-free opacity.
+            chi_bf : numpy.ndarray, dtype float
+                Free-free opacity.
+            chi_bf_contributions : numpy.ndarray, dtype float
+                Cumulative distribution of bound-free opacities at frequency
+                `nu`.
+            active_continua : numpy.ndarray, dtype int
+                Continuum ids for which absorption is possible for frequency `nu`.
+
+            Returns
+            -------
+            float
+                Macro atom activation idx.
+            """
+            fraction_bf = chi_bf / (chi_bf + chi_ff)
+            # TODO: In principle, we can also decide here whether a Thomson
+            # scattering event happens and need one less RNG call.
+            if np.random.random() < fraction_bf:  # Bound-free absorption
+                destination_level_idx = determine_bf_macro_activation_idx(
+                    nu, chi_bf_contributions, active_continua
+                )
+            else:  # Free-free absorption (i.e. k-packet creation)
+                destination_level_idx = k_packet_idx
+            return destination_level_idx
+
+        return (
+            get_current_bound_free_continua,
+            determine_bf_macro_activation_idx,
+            determine_continuum_macro_activation_idx,
         )
 
 
@@ -241,6 +397,11 @@ class TwoPhotonData(ProcessingPlasmaProperty):
             },
             index=two_photon_data.index,
         )
+        if len(two_photon_data) != 1:
+            raise NotImplementedError(
+                "Currently only one two-photon decay is supported but there "
+                f"are {len(two_photon_data)} in the atomic data."
+            )
         return two_photon_data, two_photon_idx
 
 
@@ -293,32 +454,87 @@ class LevelIdxs2LineIdx(HiddenPlasmaProperty):
     def calculate(self, atomic_data):
         index = pd.MultiIndex.from_arrays(
             [
-                atomic_data.lines_upper2level_idx,
-                atomic_data.lines_lower2level_idx,
+                atomic_data.lines_upper2macro_reference_idx,
+                atomic_data.lines_lower2macro_reference_idx,
             ],
             names=["source_level_idx", "destination_level_idx"],
         )
         level_idxs2line_idx = pd.Series(
             np.arange(len(index)), index=index, name="lines_idx"
         )
+
+        # Check for duplicate indices
+        if level_idxs2line_idx.index.duplicated().any():
+            logger.warning(
+                "Duplicate indices in level_idxs2line_idx. "
+                "Dropping duplicates. "
+                "This is an issue with the atomic data & carsus. "
+                "Once fixed upstream, this warning will be removed. "
+                "This will raise an error in the future instead. "
+                "See https://github.com/tardis-sn/carsus/issues/384"
+            )
+            # This is necessary since pd.DataFrame.drop_duplicates()
+            # does not remove duplicates if the data is different
+            # and only the index is duplicated. See the example given
+            # in the pandas documentation:
+            # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop_duplicates.html
+            level_idxs2line_idx = level_idxs2line_idx[
+                ~level_idxs2line_idx.index.duplicated()
+            ]
+
         return level_idxs2line_idx
 
 
-class AtomicMass(ProcessingPlasmaProperty):
+class LevelIdxs2TransitionIdx(HiddenPlasmaProperty):
     """
     Attributes
     ----------
-    atomic_mass : pandas.Series
-        Atomic masses of the elements used. Indexed by atomic number.
+    level_idxs2transition_idx : pandas.DataFrame, dtype int
+       Maps a source_level_idx destination_level_idx pair to a transition_idx
+       and transition type.
     """
 
-    outputs = ("atomic_mass",)
+    outputs = ("level_idxs2transition_idx",)
 
-    def calculate(self, atomic_data, selected_atoms):
-        if getattr(self, self.outputs[0]) is not None:
-            return (getattr(self, self.outputs[0]),)
-        else:
-            return atomic_data.atom_data.loc[selected_atoms].mass
+    def calculate(self, level_idxs2line_idx, level_idxs2continuum_idx):
+        level_idxs2line_idx = level_idxs2line_idx.to_frame()
+        level_idxs2line_idx.insert(1, "transition_type", -1)
+
+        level_idxs2continuum_idx = level_idxs2continuum_idx.copy()
+        level_idxs2continuum_idx.insert(1, "transition_type", -2)
+        level_idxs2continuum_idx = level_idxs2continuum_idx.rename(
+            columns=({"continuum_idx": "lines_idx"})
+        )
+
+        names = level_idxs2continuum_idx.index.names
+        level_idxs2continuum_idx = level_idxs2continuum_idx.swaplevel()
+        level_idxs2continuum_idx.index.names = names
+
+        # TODO: This should probably be defined somewhere else.
+        # One possibility would be to attach it to the cooling properties as
+        # a class attribute.
+        index_cooling = pd.MultiIndex.from_product(
+            [["k"], ["ff", "adiabatic", "bf"]], names=names
+        )
+        num_cool = len(index_cooling)
+        level_idxs2cooling_idx = pd.DataFrame(
+            {
+                "lines_idx": np.ones(num_cool, dtype=int) * -1,
+                "transition_type": np.arange(-3, -3 - num_cool, -1),
+            },
+            index=index_cooling,
+        )
+        level_idxs2transition_idx = pd.concat(
+            [
+                level_idxs2continuum_idx,
+                level_idxs2line_idx,
+                level_idxs2cooling_idx,
+            ]
+        )
+
+        # TODO: Add two-photon processes
+
+        return level_idxs2transition_idx
 
 
 class IonizationData(BaseAtomicDataProperty):
@@ -337,7 +553,7 @@ class IonizationData(BaseAtomicDataProperty):
         ionization_data = ionization_data[mask]
         counts = ionization_data.groupby(level="atomic_number").count()
 
-        if np.alltrue(counts.index == counts):
+        if np.all(counts.index == counts):
             return ionization_data
         else:
             raise IncompleteAtomicData(
@@ -368,7 +584,7 @@ class ZetaData(BaseAtomicDataProperty):
         zeta_data_check = counter(zeta_data.atomic_number.values)
         keys = np.array(list(zeta_data_check.keys()))
         values = np.array(zeta_data_check.values())
-        if np.alltrue(keys + 1 == values):
+        if np.all(keys + 1 == values) and keys:
             return zeta_data
         else:
             #            raise IncompleteAtomicData('zeta data')
@@ -382,7 +598,7 @@ class ZetaData(BaseAtomicDataProperty):
                     if (atom, ion) not in zeta_data.index:
                         missing_ions.append((atom, ion))
                     updated_index.append([atom, ion])
-            logger.warn(
+            logger.warning(
                 f"Zeta_data missing - replaced with 1s. Missing ions: {missing_ions}"
             )
             updated_index = np.array(updated_index)
@@ -458,13 +674,17 @@ class YgData(ProcessingPlasmaProperty):
 
     def calculate(self, atomic_data, continuum_interaction_species):
         yg_data = atomic_data.yg_data
+        if yg_data is None:
+            raise ValueError(
+                "Tardis does not support continuum interactions for atomic data sources that do not contain yg_data"
+            )
 
         mask_selected_species = yg_data.index.droplevel(
             ["level_number_lower", "level_number_upper"]
         ).isin(continuum_interaction_species)
         yg_data = yg_data[mask_selected_species]
 
-        t_yg = yg_data.columns.values.astype(float)
+        t_yg = atomic_data.collision_data_temperatures
         yg_data.columns = t_yg
         approximate_yg_data = self.calculate_yg_van_regemorter(
             atomic_data, t_yg, continuum_interaction_species
@@ -494,9 +714,9 @@ class YgData(ProcessingPlasmaProperty):
         )
         return yg_data, t_yg, index, delta_E, yg_idx
 
-    @staticmethod
+    @classmethod
     def calculate_yg_van_regemorter(
-        atomic_data, t_electrons, continuum_interaction_species
+        cls, atomic_data, t_electrons, continuum_interaction_species
     ):
         """
         Calculate collision strengths in the van Regemorter approximation.
@@ -538,16 +758,40 @@ class YgData(ProcessingPlasmaProperty):
         nu_lines = lines_filtered.nu.values
 
         yg = f_lu * (I_H / (H * nu_lines)) ** 2
-        coll_const = A0 ** 2 * np.pi * np.sqrt(8 * K_B / (np.pi * M_E))
+        coll_const = A0**2 * np.pi * np.sqrt(8 * K_B / (np.pi * M_E))
         yg = 14.5 * coll_const * t_electrons * yg[:, np.newaxis]
 
         u0 = nu_lines[np.newaxis].T / t_electrons * (H / K_B)
-        gamma = 0.276 * np.exp(u0) * expn(1, u0)
+        gamma = 0.276 * cls.exp1_times_exp(u0)
         gamma[gamma < 0.2] = 0.2
         yg *= u0 * gamma / BETA_COLL
         yg = pd.DataFrame(yg, index=lines_filtered.index, columns=t_electrons)
 
         return yg
+
+    @staticmethod
+    def exp1_times_exp(x):
+        """
+        Product of the Exponential integral E1 and an exponential.
+
+        This function calculates the product of the Exponential integral E1
+        and an exponential in a way that also works for large values.
+
+        Parameters
+        ----------
+        x : array_like
+            Input values.
+
+        Returns
+        -------
+        array_like
+            Output array.
+        """
+        f = exp1(x) * np.exp(x)
+        # Use Laurent series for large values to avoid infinite exponential
+        mask = x > 500
+        f[mask] = (x**-1 - x**-2 + 2 * x**-3 - 6 * x**-4)[mask]
+        return f
 
 
 class YgInterpolator(ProcessingPlasmaProperty):

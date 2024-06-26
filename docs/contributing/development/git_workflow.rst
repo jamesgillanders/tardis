@@ -276,7 +276,7 @@ In more detail
 #. Once you are a bit further along, test your changes do not lead to
    regressions, and add new tests (see the Astropy :ref:`testing-guidelines` we follow)::
 
-     python setup.py test
+     pytest tardis
 
    If you have `Sphinx <https://www.sphinx-doc.org/en/master/>`_ installed, you can also check that the documentation
    builds and looks correct::
@@ -352,6 +352,8 @@ When you are ready to ask for someone to review your code and consider a merge:
    pull request message.  This is still a good way to start a preliminary
    code review.
 
+The TARDIS documentation features interactive notebooks that run varius aspects of the code, as well as API documentation. To make sure that these notebooks remain up-to-date with the code, and that your docstrings are correctly incorporated into the API documentation, we ask that you build the documentation for your pull request following the instructions :ref:`here <doc-preview>`.
+
 .. _using-virtualenv:
 
 Making sure your Pull Request stays up-to-date
@@ -363,6 +365,8 @@ time, other pull requests are merged and the master branch evolves further.
 To make sure that your changes are still working on the new master, you want to
 *rebase* your branch on top of the evolved master.
 
+
+.. _rebase-on-trunk:
 
 Rebasing on trunk
 ^^^^^^^^^^^^^^^^^

@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 
-from tardis.io.decay import IsotopeAbundances
+from tardis.model.matter.decay import IsotopicMassFraction
 from numpy.testing import assert_almost_equal
 
 
@@ -10,17 +10,17 @@ def simple_abundance_model():
     index = pd.MultiIndex.from_tuples(
         [(28, 56)], names=["atomic_number", "mass_number"]
     )
-    return IsotopeAbundances([[1.0, 1.0]], index=index)
+    return IsotopicMassFraction([[1.0, 1.0]], index=index)
 
 
 def test_simple_decay(simple_abundance_model):
     decayed_abundance = simple_abundance_model.decay(100)
-    assert_almost_equal(decayed_abundance.loc[26, 56][0], 0.55752)
-    assert_almost_equal(decayed_abundance.loc[26, 56][1], 0.55752)
-    assert_almost_equal(decayed_abundance.loc[27, 56][0], 0.4423791)
-    assert_almost_equal(decayed_abundance.loc[27, 56][1], 0.4423791)
-    assert_almost_equal(decayed_abundance.loc[28, 56][0], 1.1086e-05)
-    assert_almost_equal(decayed_abundance.loc[28, 56][1], 1.1086e-05)
+    assert_almost_equal(decayed_abundance.loc[26, 56][0], 0.55754786)
+    assert_almost_equal(decayed_abundance.loc[26, 56][1], 0.55754786)
+    assert_almost_equal(decayed_abundance.loc[27, 56][0], 0.44235126)
+    assert_almost_equal(decayed_abundance.loc[27, 56][1], 0.44235126)
+    assert_almost_equal(decayed_abundance.loc[28, 56][0], 1.10859709e-05)
+    assert_almost_equal(decayed_abundance.loc[28, 56][1], 1.10859709e-05)
 
 
 @pytest.fixture

@@ -47,7 +47,6 @@ Mission Statement
     using an open-community model that emphasizes interdisciplinary 
     research and science reproducibility.*
 
-
 .. toctree::
     :maxdepth: 2
     :hidden:
@@ -55,6 +54,8 @@ Mission Statement
     installation
     quickstart
     tutorials
+    how_to_guides
+    faq
     API <api/modules>
 
 
@@ -63,7 +64,9 @@ Mission Statement
     :caption: Input/Output
     :hidden:
     
+    io/hdf/index
     io/configuration/index
+    io/model/index
     io/optional/index
     io/visualization/index
     io/output/index
@@ -74,9 +77,10 @@ Mission Statement
     :caption: Physics Walkthrough
     :hidden:
     
+    physics/intro/index
     physics/setup/index
     physics/montecarlo/index
-    physics/est_and_conv/index
+    physics/update_and_conv/update_and_conv
     physics/spectrum/index
 
 
@@ -87,8 +91,9 @@ Mission Statement
 
     contributing/CONTRIBUTING.md
     contributing/development/index
+    contributing/tools/index
     contributing/CHANGELOG.md
-    contributing/roadmap
+    contributing/in_progress/index
 
 
 .. toctree::
@@ -99,11 +104,3 @@ Mission Statement
     resources/research_done_using_TARDIS/research_papers
     resources/code_comparison/index
     resources/zreferences
-
-
-.. toctree::
-    :maxdepth: 2
-    :caption: Outdated
-    :hidden:
-
-    outdated/index

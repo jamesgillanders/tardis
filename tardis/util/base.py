@@ -9,13 +9,16 @@ import pandas as pd
 import yaml
 from tardis import constants
 from astropy import units as u
-from pyne import nucname
+from radioactivedecay import Nuclide, DEFAULTDATA
+from radioactivedecay.utils import parse_nuclide, Z_DICT
 
 import tardis
 from tardis.io.util import get_internal_data_path
 from IPython import get_ipython, display
 import tqdm
 import tqdm.notebook
+import functools
+import warnings
 
 k_B_cgs = constants.k_B.cgs.value
 c_cgs = constants.c.cgs.value
@@ -29,7 +32,11 @@ tardis_dir = os.path.realpath(tardis.__path__[0])
 ATOMIC_SYMBOLS_DATA = (
     pd.read_csv(
         get_internal_data_path("atomic_symbols.dat"),
-        delim_whitespace=True,
+        # The argument `delim_whitespace` was changed to `sep`
+        #   because the first one is deprecated since version 2.2.0.
+        #   The regular expression means: the separation is one or
+        #   more spaces together (simple space, tabs, new lines).
+        sep=r"\s+",
         names=["atomic_number", "symbol"],
     )
     .set_index("atomic_number")
@@ -180,7 +187,7 @@ def calculate_luminosity(
     )
 
     flux_density = np.trapz(flux, wavelength) * (flux_unit * wavelength_unit)
-    luminosity = (flux_density * 4 * np.pi * distance ** 2).to("erg/s")
+    luminosity = (flux_density * 4 * np.pi * distance**2).to("erg/s")
 
     return luminosity.value, wavelength.min(), wavelength.max()
 
@@ -191,7 +198,7 @@ def create_synpp_yaml(radial1d_mdl, fname, shell_no=0, lines_db=None):
 
     Parameters
     ----------
-    radial1d_mdl : Radial1DModel
+    radial1d_mdl : SimulationState
         Inputted object that will be read into YAML file
     fname : str
         File name for the synpp yaml
@@ -240,10 +247,10 @@ def create_synpp_yaml(radial1d_mdl, fname, shell_no=0, lines_db=None):
         )
 
     yaml_reference["output"]["min_wl"] = float(
-        radial1d_mdl.runner.spectrum.wavelength.to("angstrom").value.min()
+        radial1d_mdl.transport.spectrum.wavelength.to("angstrom").value.min()
     )
     yaml_reference["output"]["max_wl"] = float(
-        radial1d_mdl.runner.spectrum.wavelength.to("angstrom").value.max()
+        radial1d_mdl.transport.spectrum.wavelength.to("angstrom").value.max()
     )
 
     # raise Exception("there's a problem here with units what units does synpp expect?")
@@ -284,19 +291,19 @@ def create_synpp_yaml(radial1d_mdl, fname, shell_no=0, lines_db=None):
         yaml.dump(yaml_reference, stream=f, explicit_start=True)
 
 
-def intensity_black_body(nu, T):
+def intensity_black_body(nu, temperature):
     """
     Calculate the intensity of a black-body according to the following formula
 
     .. math::
-        I(\\nu, T) = \\frac{2h\\nu^3}{c^2}\\frac{1}
+        I(\\nu, temperature) = \\frac{2h\\nu^3}{c^2}\\frac{1}
         {e^{h\\nu \\beta_\\textrm{rad}} - 1}
 
     Parameters
     ----------
     nu : float
         Frequency of light
-    T : float
+    temperature : float
         Temperature in kelvin
 
     Returns
@@ -304,8 +311,8 @@ def intensity_black_body(nu, T):
     Intensity : float
         Returns the intensity of the black body
     """
-    beta_rad = 1 / (k_B_cgs * T)
-    coefficient = 2 * h_cgs / c_cgs ** 2
+    beta_rad = 1 / (k_B_cgs * temperature)
+    coefficient = 2 * h_cgs / c_cgs**2
     intensity = ne.evaluate(
         "coefficient * nu**3 / " "(exp(h_cgs * nu * beta_rad) -1 )"
     )
@@ -386,7 +393,7 @@ def species_string_to_tuple(species_string):
                 f"Given ion number ('{ion_number_string}') could not be parsed"
             )
 
-    if ion_number > atomic_number:
+    if ion_number - 1 > atomic_number:
         raise ValueError(
             "Species given does not exist: ion number > atomic number"
         )
@@ -491,6 +498,33 @@ def reformat_element_symbol(element_string):
     return element_string[0].upper() + element_string[1:].lower()
 
 
+def is_valid_nuclide_or_elem(input_nuclide):
+    """
+    Parses nuclide string into symbol - mass number format and returns
+    whether the nuclide is either contained in the decay dataset or is a
+    raw element string.
+
+    Parameters
+    ----------
+    input_nuclide : str or int
+        Nuclide name string or element string.
+
+    Returns
+    -------
+    bool
+        Bool indicating if the input nuclide is contained in the decay dataset
+        or is a valid element.
+    """
+
+    try:
+        parse_nuclide(input_nuclide, DEFAULTDATA.nuclides, "ICRP-107")
+        is_nuclide = True
+    except:
+        is_nuclide = True if input_nuclide in Z_DICT.values() else False
+
+    return is_nuclide
+
+
 def quantity_linspace(start, stop, num, **kwargs):
     """
     Essentially the same input parameters as linspace, but
@@ -546,7 +580,7 @@ def convert_abundances_format(fname, delimiter=r"\s+"):
     # Drop shell index column
     df.drop(df.columns[0], axis=1, inplace=True)
     # Assign header row
-    df.columns = [nucname.name(i) for i in range(1, df.shape[1] + 1)]
+    df.columns = [Z_DICT[i] for i in range(1, df.shape[1] + 1)]
     return df
 
 
@@ -671,6 +705,14 @@ def update_packet_pbar(i, current_iteration, no_of_packets, total_iterations):
     packet_pbar.update(i)
 
 
+def refresh_packet_pbar():
+    """
+    Refresh packet progress bar after each iteration.
+
+    """
+    packet_pbar.refresh()
+
+
 def update_iterations_pbar(i):
     """
     Update progress bar for each iteration.
@@ -725,3 +767,21 @@ def fix_bar_layout(bar, no_of_packets=None, total_iterations=None):
             bar.reset(total=total_iterations)
         else:
             pass
+
+
+def deprecated(func):
+    """
+    A decorator to add a deprecation warning to a function that is no longer used
+
+    Parameters
+    ----------
+
+    func : function
+    """
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        warnings.warn("This function is deprecated.", DeprecationWarning)
+        return func(*args, **kwargs)
+
+    return wrapper

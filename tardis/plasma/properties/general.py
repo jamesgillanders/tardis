@@ -1,10 +1,9 @@
 import logging
 
 import numpy as np
-import pandas as pd
 from astropy import units as u
-from tardis import constants as const
 
+from tardis import constants as const
 from tardis.plasma.properties.base import ProcessingPlasmaProperty
 
 logger = logging.getLogger(__name__)
@@ -12,7 +11,6 @@ logger = logging.getLogger(__name__)
 __all__ = [
     "BetaRadiation",
     "GElectron",
-    "NumberDensity",
     "SelectedAtoms",
     "ElectronTemperature",
     "BetaElectron",
@@ -57,7 +55,7 @@ class GElectron(ProcessingPlasmaProperty):
     def calculate(self, beta_rad):
         return (
             (2 * np.pi * const.m_e.cgs.value / beta_rad)
-            / (const.h.cgs.value ** 2)
+            / (const.h.cgs.value**2)
         ) ** 1.5
 
 
@@ -76,23 +74,6 @@ class ThermalGElectron(GElectron):
 
     def calculate(self, beta_electron):
         return super(ThermalGElectron, self).calculate(beta_electron)
-
-
-class NumberDensity(ProcessingPlasmaProperty):
-    """
-    Attributes
-    ----------
-    number_density : Pandas DataFrame, dtype float
-                     Indexed by atomic number, columns corresponding to zones
-    """
-
-    outputs = ("number_density",)
-    latex_name = ("N_{i}",)
-
-    @staticmethod
-    def calculate(atomic_mass, abundance, density):
-        number_densities = abundance * density
-        return number_densities.div(atomic_mass.loc[abundance.index], axis=0)
 
 
 class SelectedAtoms(ProcessingPlasmaProperty):
@@ -149,7 +130,7 @@ class LuminosityInner(ProcessingPlasmaProperty):
     @staticmethod
     def calculate(r_inner, t_inner):
         return (
-            4 * np.pi * const.sigma_sb.cgs * r_inner[0] ** 2 * t_inner ** 4
+            4 * np.pi * const.sigma_sb.cgs * r_inner[0] ** 2 * t_inner**4
         ).to("erg/s")
 
 

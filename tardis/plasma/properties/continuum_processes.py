@@ -2,14 +2,18 @@ import logging
 
 import numpy as np
 import pandas as pd
+from numba import njit, prange
 
-from numba import prange, njit
 from tardis import constants as const
-
+from tardis.transport.montecarlo.estimators.util import (
+    bound_free_estimator_array2frame,
+    integrate_array_by_blocks,
+)
+from tardis.transport.montecarlo import njit_dict
 from tardis.plasma.exceptions import PlasmaException
 from tardis.plasma.properties.base import (
-    ProcessingPlasmaProperty,
     Input,
+    ProcessingPlasmaProperty,
     TransitionProbabilitiesProperty,
 )
 from tardis.plasma.properties.j_blues import JBluesDiluteBlackBody
@@ -23,6 +27,7 @@ __all__ = [
     "StimRecombRateCoeffEstimator",
     "CorrPhotoIonRateCoeff",
     "BfHeatingRateCoeffEstimator",
+    "StimRecombCoolingRateCoeffEstimator",
     "SpontRecombCoolingRateCoeff",
     "RawRecombTransProbs",
     "RawPhotoIonTransProbs",
@@ -38,54 +43,31 @@ __all__ = [
     "FreeBoundEmissionCDF",
     "RawTwoPhotonTransProbs",
     "TwoPhotonEmissionCDF",
+    "TwoPhotonFrequencySampler",
     "CollIonRateCoeffSeaton",
     "CollRecombRateCoeff",
     "RawCollIonTransProbs",
 ]
 
-
+N_A = const.N_A.cgs.value
 K_B = const.k_B.cgs.value
 C = const.c.cgs.value
 H = const.h.cgs.value
 A0 = const.a0.cgs.value
 M_E = const.m_e.cgs.value
-BETA_COLL = (H ** 4 / (8 * K_B * M_E ** 3 * np.pi ** 3)) ** 0.5
-
+E = const.e.esu.value
+BETA_COLL = (H**4 / (8 * K_B * M_E**3 * np.pi**3)) ** 0.5
+F_K = (
+    16
+    / (3.0 * np.sqrt(3))
+    * np.sqrt((2 * np.pi) ** 3 * K_B / (H**2 * M_E**3))
+    * (E**2 / C) ** 3
+)  # See Eq. 19 in Sutherland, R. S. 1998, MNRAS, 300, 321
+FF_OPAC_CONST = (
+    (2 * np.pi / (3 * M_E * K_B)) ** 0.5 * 4 * E**6 / (3 * M_E * H * C)
+)  # See Eq. 6.1.8 in http://personal.psu.edu/rbc3/A534/lec6.pdf
 
 logger = logging.getLogger(__name__)
-
-njit_dict = {"fastmath": False, "parallel": False}
-
-
-@njit(**njit_dict)
-def integrate_array_by_blocks(f, x, block_references):
-    """
-    Integrate a function over blocks.
-
-    This function integrates a function `f` defined at locations `x`
-    over blocks given in `block_references`.
-
-    Parameters
-    ----------
-    f : numpy.ndarray, dtype float
-        2D input array to integrate.
-    x : numpy.ndarray, dtype float
-        1D array with the sample points corresponding to the `f` values.
-    block_references : numpy.ndarray, dtype int
-        1D array with the start indices of the blocks to be integrated.
-
-    Returns
-    -------
-    numpy.ndarray, dtype float
-        2D array with integrated values.
-    """
-    integrated = np.zeros((len(block_references) - 1, f.shape[1]))
-    for i in prange(f.shape[1]):  # columns
-        for j in prange(len(integrated)):  # rows
-            start = block_references[j]
-            stop = block_references[j + 1]
-            integrated[j, i] = np.trapz(f[start:stop, i], x[start:stop])
-    return integrated
 
 
 # It is currently not possible to use scipy.integrate.cumulative_trapezoid in
@@ -229,7 +211,7 @@ def cooling_rate_series2dataframe(cooling_rate_series, destination_level_idx):
     return cooling_rate_frame
 
 
-class IndexSetterMixin(object):
+class IndexSetterMixin:
     @staticmethod
     def set_index(p, photo_ion_idx, transition_type=0, reverse=True):
         idx = photo_ion_idx.loc[p.index]
@@ -271,7 +253,7 @@ class SpontRecombRateCoeff(ProcessingPlasmaProperty):
         x_sect = photo_ion_cross_sections["x_sect"].values
         nu = photo_ion_cross_sections["nu"].values
 
-        alpha_sp = 8 * np.pi * x_sect * nu ** 2 / C ** 2
+        alpha_sp = 8 * np.pi * x_sect * nu**2 / C**2
         alpha_sp = alpha_sp[:, np.newaxis]
         alpha_sp = alpha_sp * boltzmann_factor_photo_ion
         alpha_sp = integrate_array_by_blocks(
@@ -306,7 +288,7 @@ class SpontRecombCoolingRateCoeff(ProcessingPlasmaProperty):
         x_sect = photo_ion_cross_sections["x_sect"].values
         nu = photo_ion_cross_sections["nu"].values
         factor = (1 - nu_i / photo_ion_cross_sections["nu"]).values
-        alpha_sp = (8 * np.pi * x_sect * factor * nu ** 3 / C ** 2) * H
+        alpha_sp = (8 * np.pi * x_sect * factor * nu**3 / C**2) * H
         alpha_sp = alpha_sp[:, np.newaxis]
         alpha_sp = alpha_sp * boltzmann_factor_photo_ion
         alpha_sp = integrate_array_by_blocks(
@@ -344,7 +326,7 @@ class FreeBoundEmissionCDF(ProcessingPlasmaProperty):
         nu = photo_ion_cross_sections["nu"].values
         # alpha_sp_E will be missing a lot of prefactors since we are only
         # interested in relative values here
-        alpha_sp_E = nu ** 3 * x_sect
+        alpha_sp_E = nu**3 * x_sect
         alpha_sp_E = alpha_sp_E[:, np.newaxis]
         alpha_sp_E = alpha_sp_E * boltzmann_factor_photo_ion
         alpha_sp_E = cumulative_integrate_array_by_blocks(
@@ -376,6 +358,7 @@ class PhotoIonRateCoeff(ProcessingPlasmaProperty):
         photo_ion_index,
         t_rad,
         w,
+        level2continuum_idx,
     ):
         # Used for initialization
         if gamma_estimator is None:
@@ -387,7 +370,11 @@ class PhotoIonRateCoeff(ProcessingPlasmaProperty):
                 w,
             )
         else:
-            gamma = gamma_estimator * photo_ion_norm_factor
+            gamma_estimator = bound_free_estimator_array2frame(
+                gamma_estimator, level2continuum_idx
+            )
+            gamma = gamma_estimator * photo_ion_norm_factor.value
+
         return gamma
 
     @staticmethod
@@ -434,6 +421,7 @@ class StimRecombRateCoeff(ProcessingPlasmaProperty):
         phi_ik,
         t_electrons,
         boltzmann_factor_photo_ion,
+        level2continuum_idx,
     ):
         # Used for initialization
         if alpha_stim_estimator is None:
@@ -446,9 +434,12 @@ class StimRecombRateCoeff(ProcessingPlasmaProperty):
                 t_electrons,
                 boltzmann_factor_photo_ion,
             )
-            alpha_stim *= phi_ik.loc[alpha_stim.index]
         else:
+            alpha_stim_estimator = bound_free_estimator_array2frame(
+                alpha_stim_estimator, level2continuum_idx
+            )
             alpha_stim = alpha_stim_estimator * photo_ion_norm_factor
+        alpha_stim *= phi_ik.loc[alpha_stim.index]
         return alpha_stim
 
     @staticmethod
@@ -544,10 +535,14 @@ class CorrPhotoIonRateCoeff(ProcessingPlasmaProperty):
         n_k_index = get_ion_multi_index(alpha_stim.index)
         n_k = ion_number_density.loc[n_k_index].values
         n_i = level_number_density.loc[alpha_stim.index].values
-        gamma_corr = gamma - alpha_stim * n_k * electron_densities / n_i
+        gamma_corr = gamma - (alpha_stim * n_k / n_i).multiply(
+            electron_densities
+        )
         num_neg_elements = (gamma_corr < 0).sum().sum()
         if num_neg_elements:
-            raise PlasmaException("Negative values in CorrPhotoIonRateCoeff.")
+            raise PlasmaException(
+                "Negative values in CorrPhotoIonRateCoeff.  Try raising the number of montecarlo packets."
+            )
         return gamma_corr
 
 
@@ -584,6 +579,18 @@ class StimRecombRateCoeffEstimator(Input):
 
     outputs = ("alpha_stim_estimator",)
     latex_name = (r"\alpha^{\textrm{stim}}_\textrm{estim}",)
+
+
+class StimRecombCoolingRateCoeffEstimator(Input):
+    """
+    Attributes
+    ----------
+    stim_recomb_cooling_coeff_estimator : pandas.DataFrame, dtype float
+        Unnormalized MC estimator for the stimulated recombination cooling rate
+        coefficient.
+    """
+
+    outputs = ("stim_recomb_cooling_coeff_estimator",)
 
 
 class BfHeatingRateCoeffEstimator(Input):
@@ -843,9 +850,17 @@ class FreeFreeCoolingRate(TransitionProbabilitiesProperty):
     ----------
     cool_rate_ff : pandas.DataFrame, dtype float
         The free-free cooling rate of the electron gas.
+    ff_cooling_factor : pandas.Series, dtype float
+        Pre-factor needed in the calculation of the free-free cooling rate and
+        the free-free opacity.
+
+    Notes
+    -----
+    This implementation uses a free-free Gaunt factor of one for all species
+    and ionization stages, which is an approximation.
     """
 
-    outputs = ("cool_rate_ff",)
+    outputs = ("cool_rate_ff", "ff_cooling_factor")
     transition_probabilities_outputs = ("cool_rate_ff",)
     latex_name = (r"C^{\textrm{ff}}",)
 
@@ -853,20 +868,46 @@ class FreeFreeCoolingRate(TransitionProbabilitiesProperty):
         ff_cooling_factor = self._calculate_ff_cooling_factor(
             ion_number_density, electron_densities
         )
-        cool_rate_ff = 1.426e-27 * np.sqrt(t_electrons) * ff_cooling_factor
+        cool_rate_ff = F_K * np.sqrt(t_electrons) * ff_cooling_factor
         cool_rate_ff = cooling_rate_series2dataframe(
             cool_rate_ff, destination_level_idx="ff"
         )
-        return cool_rate_ff
+        return cool_rate_ff, ff_cooling_factor.values
 
     @staticmethod
     def _calculate_ff_cooling_factor(ion_number_density, electron_densities):
         ion_charge = ion_number_density.index.get_level_values(1).values
         factor = (
             electron_densities
-            * ion_number_density.multiply(ion_charge ** 2, axis=0).sum()
+            * ion_number_density.multiply(ion_charge**2, axis=0).sum()
         )
         return factor
+
+
+class TwoPhotonFrequencySampler(ProcessingPlasmaProperty):
+    """
+    Attributes
+    ----------
+    nu_two_photon_sampler : float
+        Frequency of the two-photon emission process
+    """
+
+    outputs = ("nu_two_photon_sampler",)
+
+    def calculate(self, two_photon_emission_cdf):
+        nus = two_photon_emission_cdf["nu"].values
+        em = two_photon_emission_cdf["cdf"].values
+
+        @njit(error_model="numpy", fastmath=True)
+        def nu_two_photon():
+            zrand = np.random.random()
+            idx = np.searchsorted(em, zrand, side="right")
+
+            return nus[idx] - (em[idx] - zrand) / (em[idx] - em[idx - 1]) * (
+                nus[idx] - nus[idx - 1]
+            )
+
+        return nu_two_photon
 
 
 class FreeBoundCoolingRate(TransitionProbabilitiesProperty):
@@ -976,7 +1017,8 @@ class PhotoIonBoltzmannFactor(ProcessingPlasmaProperty):
 
     outputs = ("boltzmann_factor_photo_ion",)
 
-    def calculate(self, photo_ion_cross_sections, t_electrons):
+    @staticmethod
+    def calculate(photo_ion_cross_sections, t_electrons):
         nu = photo_ion_cross_sections["nu"].values
 
         boltzmann_factor = np.exp(-nu[np.newaxis].T / t_electrons * (H / K_B))

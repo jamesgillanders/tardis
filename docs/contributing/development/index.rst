@@ -1,3 +1,5 @@
+.. _developer_guidelines:
+
 ******************
 Developer Workflow
 ******************
@@ -15,6 +17,7 @@ to the Astropy team for designing it.
     git_workflow
     documentation_guidelines
     running_tests
+    benchmarks
     code_quality
     developer_faq
 
@@ -30,4 +33,3 @@ the core team (active maintainers) of TARDIS.
     update_refdata
     matterbridge
     debug_numba
-    profiling/index
