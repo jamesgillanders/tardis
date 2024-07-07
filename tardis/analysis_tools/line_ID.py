@@ -18,7 +18,6 @@ from tardis.visualization.tools.sdec_plot import SDECData
 
 
 class LineIdentifier(object):
-
     def __init__(self, data):
         """
         Initialize line_identifier with required data of simulation model.
@@ -155,7 +154,9 @@ class LineIdentifier(object):
         ax = fig.add_subplot()
         fig.subplots_adjust(left=0.2)
 
-        ax.tick_params(axis="x", direction="in", top=True, bottom=True, which="both")
+        ax.tick_params(
+            axis="x", direction="in", top=True, bottom=True, which="both"
+        )
         ax.xaxis.set_minor_locator(tck.AutoMinorLocator())
 
         if lam_min is None:
@@ -169,13 +170,11 @@ class LineIdentifier(object):
             self.lam_max = lam_max
 
         _lines_count = self.lines_count[np.argsort(self.lines_count)][::-1]
-        
-        _lines_fraction = self.lines_count[
-            np.argsort(self.lines_count)
-        ][
+
+        _lines_fraction = self.lines_count[np.argsort(self.lines_count)][
             ::-1
         ] / float(self.lines_count.sum())
-        
+
         _lines_ids = self.lines_ids_unique[np.argsort(self.lines_count)][::-1]
 
         if nlines is None:
@@ -203,7 +202,7 @@ class LineIdentifier(object):
             )
 
             species.append(f"{chemical_symbol} {ionisation_level}")
-            
+
             wavelengths.append(
                 f"{self.lines_info_unique.loc[line_id].wavelength:.3f}"
             )
@@ -220,10 +219,10 @@ class LineIdentifier(object):
         ax.barh(np.arange(self.nlines), _lines_fraction[: self.nlines][::-1])
 
         ax.set_xlabel("Fraction of total line transitions in wavelength range")
-        
+
         ax.set_yticks(np.arange(len(_lines_fraction[: self.nlines][::-1])))
         ax.set_yticklabels(labels[: self.nlines][::-1], size="medium")
-        
+
         ax.annotate(
             f"{self.nlines}/{len(self.lines_count)} lines displayed\n {np.sum(_lines_count[:self.nlines])}/{len(self.lines_ids)} interacting and\n escaping r-packets displayed",
             xy=(0.95, 0.05),
@@ -232,10 +231,8 @@ class LineIdentifier(object):
             verticalalignment="bottom",
         )
 
-
         """ Below we export the compiled line information to output .csv files,
         IF the user specifies an output filename for them. """
-
 
         # This gives output file for contributions of lines
         if output_filename != None:
@@ -255,7 +252,6 @@ class LineIdentifier(object):
 
                 dataframe.to_csv(file, sep="\t", index=False)
 
-
         # This gives collapsed contributions for species summed across all lines
         if output_filename != None:
             dataframe = pd.DataFrame(
@@ -268,13 +264,17 @@ class LineIdentifier(object):
             )
 
             dataframe_collapsed = dataframe.groupby(["Species"]).sum()
-            dataframe_collapsed = dataframe_collapsed.drop(columns=["Wavelength(AA)"])
+            dataframe_collapsed = dataframe_collapsed.drop(
+                columns=["Wavelength(AA)"]
+            )
 
             dataframe_collapsed = dataframe_collapsed.sort_values(
                 by=["Total_no_transitions"], ascending=False
             )
 
-            with open(f"{output_filename[:-4]}_collapsed{output_filename[-4:]}", "w") as file:
+            with open(
+                f"{output_filename[:-4]}_collapsed{output_filename[-4:]}", "w"
+            ) as file:
                 file.write(
                     f"# Line transitions in wavelength range {self.lam_min.value:.1f}-{self.lam_max.value:.1f} Angstroms \n"
                 )
