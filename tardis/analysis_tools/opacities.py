@@ -1,5 +1,6 @@
 """This module provides an opacity calculator class with which the opacities
 and optical depth information may be extracted from Tardis runs."""
+
 import logging
 import numpy as np
 import astropy.units as units

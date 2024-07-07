@@ -1,7 +1,5 @@
-"""
-This module provides a line identification tool that allows the user to extract
-a summary of the most prominent transitions in a TARDIS simulation.
-"""
+""" This module provides a line identification tool that allows the user to
+extract a summary of the most prominent transitions in a TARDIS simulation."""
 
 import numpy as np
 import pandas as pd
@@ -17,7 +15,8 @@ from tardis.util.base import (
 from tardis.visualization.tools.sdec_plot import SDECData
 
 
-class line_identifier:
+class LineIdentifier(object):
+
     def __init__(self, data):
         """
         Initialize line_identifier with required data of simulation model.
@@ -184,7 +183,7 @@ class line_identifier:
         species = []
         wavelengths = []
         labels = []
-        angstrom = "$\mathrm{\AA}$"  # included as f-strings cannot have \ in {}
+
         for line_id in _lines_ids:
             chemical_symbol = atomic_number2element_symbol(
                 self.lines_info_unique.loc[line_id].atomic_number
@@ -198,24 +197,20 @@ class line_identifier:
                 f"{self.lines_info_unique.loc[line_id].wavelength:.3f}"
             )
             labels.append(
-                f"{chemical_symbol} {ionisation_level}: "
-                f"{self.lines_info_unique.loc[line_id].wavelength:.3f}"
-                f"{angstrom}"
+                f"{chemical_symbol} {ionisation_level}: {self.lines_info_unique.loc[line_id].wavelength:.3f} $\mathrm{{\AA}}$"
             )
 
         # parameters for the output plot
         ax.set_title(
-            f"Line Transitions in Range {self.lam_min.value:.1f}{angstrom}$\leq"
-            f" \lambda \leq${self.lam_max.value:.1f}{angstrom}"
+            f"Line Transitions in Range {self.lam_min.value:.1f}$\mathrm{{\AA}} \leq \lambda \leq${self.lam_max.value:.1f}$\mathrm{{\AA}}$"
         )
+
         ax.barh(np.arange(self.nlines), _lines_fraction[: self.nlines][::-1])
         ax.set_xlabel("Fraction of Total Line Transitions in Wavelength Range")
         ax.set_yticks(np.arange(len(_lines_fraction[: self.nlines][::-1])))
         ax.set_yticklabels(labels[: self.nlines][::-1], size="medium")
         ax.annotate(
-            f"{len(self.lines_ids)} interacting and\nescaping packets\n"
-            f"({np.sum(_lines_count[:self.nlines])} shown)\n{self.nlines}"
-            f" of {len(self.lines_count)} lines displayed",
+            f"{len(self.lines_ids)} interacting and\nescaping packets \n ({np.sum(_lines_count[:self.nlines])} shown) \n {self.nlines} of {len(self.lines_count)} lines displayed",
             xy=(0.95, 0.05),
             xycoords="axes fraction",
             horizontalalignment="right",
@@ -235,14 +230,12 @@ class line_identifier:
                 }
             )
 
-            f = open(output_filename, "w")
-            f.write(
-                f"# Line Transitions in Wavelength Range "
-                f"{self.lam_min.value:.1f} - {self.lam_max.value:.1f}"
-                f" Angstroms\n"
-            )
-            dataframe.to_csv(f, sep="\t", index=False)
-            f.close()
+            with open(output_filename, "w") as file:
+                file.write(
+                    f"# Line Transitions in Wavelength Range {self.lam_min.value:.1f} - {self.lam_max.value:.1f} Angstroms \n"
+                )
+
+                dataframe.to_csv(file, sep="\t", index=False)
 
         # this gives collapsed contributions for species summed across all lines
         """if a filename has been specified, then all lines in the region of
@@ -258,17 +251,14 @@ class line_identifier:
             )
 
             dataframe_collapsed = dataframe.groupby(["Species"]).sum()
+
             dataframe_collapsed = dataframe_collapsed.sort_values(
                 by=["Total no. of transitions"], ascending=False
             )
 
-            f = open(
-                f"{output_filename[:-4]}_collapsed{output_filename[-4:]}", "w"
-            )
-            f.write(
-                f"# Line Transitions in Wavelength Range "
-                f"{self.lam_min.value:.1f} - {self.lam_max.value:.1f}"
-                f" Angstroms\n"
-            )
-            dataframe_collapsed.to_csv(f, sep="\t", index=True)
-            f.close()
+            with open(f"{output_filename[:-4]}_collapsed{output_filename[-4:]}", "w") as file:
+                file.write(
+                    f"# Line Transitions in Wavelength Range {self.lam_min.value:.1f} - {self.lam_max.value:.1f} Angstroms \n"
+                )
+
+                dataframe_collapsed.to_csv(file, sep="\t", index=True)
