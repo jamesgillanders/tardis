@@ -44,7 +44,7 @@ class LineIdentifier(object):
         -------
         line_identifier
         """
-        if sim.transport.virt_logging:
+        if sim.transport.enable_vpacket_tracking:
             return cls(SDECData.from_simulation(sim, "virtual"))
         else:
             return cls(SDECData.from_simulation(sim, "real"))
