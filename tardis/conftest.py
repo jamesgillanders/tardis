@@ -1,10 +1,11 @@
 import os
+from copy import deepcopy
 from pathlib import Path
 
-import pandas as pd
 import pytest
 from astropy.version import version as astropy_version
 
+from tardis import run_tardis
 from tardis.io.configuration.config_reader import Configuration
 from tardis.io.util import YAMLLoader, yaml_load_file
 from tardis.simulation import Simulation
@@ -92,9 +93,6 @@ def pytest_configure(config):
 
 def pytest_addoption(parser):
     parser.addoption(
-        "--tardis-refdata", default=None, help="Path to Tardis Reference Folder"
-    )
-    parser.addoption(
         "--tardis-regression-data",
         default=None,
         help="Path to the TARDIS regression data directory",
@@ -141,17 +139,20 @@ def generate_reference(request):
     option = request.config.getoption("--generate-reference")
     if option is None:
         return False
-    else:
-        return option
+    return option
 
 
 @pytest.fixture(scope="session")
-def tardis_ref_path(request):
-    tardis_ref_path = request.config.getoption("--tardis-refdata")
-    if tardis_ref_path is None:
-        pytest.skip("--tardis-refdata was not specified")
+def tardis_regression_path(request):
+    tardis_regression_path = request.config.getoption(
+        "--tardis-regression-data"
+    )
+    if tardis_regression_path is None:
+        pytest.skip("--tardis-regression-data was not specified")
     else:
-        return Path(os.path.expandvars(os.path.expanduser(tardis_ref_path)))
+        return Path(
+            os.path.expandvars(os.path.expanduser(tardis_regression_path))
+        )
 
 
 @pytest.fixture(scope="session")
@@ -163,16 +164,6 @@ def tardis_snapshot_path(request):
         return Path(
             os.path.expandvars(os.path.expanduser(tardis_snapshot_path))
         )
-
-
-@pytest.yield_fixture(scope="session")
-def tardis_ref_data(tardis_ref_path, generate_reference):
-    if generate_reference:
-        mode = "w"
-    else:
-        mode = "r"
-    with pd.HDFStore(tardis_ref_path / "unit_test_data.h5", mode=mode) as store:
-        yield store
 
 
 @pytest.fixture(scope="function")
@@ -219,6 +210,14 @@ def config_verysimple(example_configuration_dir):
     )
 
 
+# Creating a new config object so as to not overwrite other config.
+@pytest.fixture(scope="session")
+def config_rpacket_tracking(example_configuration_dir):
+    return Configuration.from_yaml(
+        example_configuration_dir / "tardis_configv1_verysimple.yml"
+    )
+
+
 @pytest.fixture(scope="function")
 def config_montecarlo_1e5_verysimple(example_configuration_dir):
     return Configuration.from_yaml(
@@ -230,7 +229,8 @@ def config_montecarlo_1e5_verysimple(example_configuration_dir):
 def simulation_verysimple(config_verysimple, atomic_dataset):
     atomic_data = deepcopy(atomic_dataset)
     sim = Simulation.from_config(config_verysimple, atom_data=atomic_data)
-    sim.iterate(4000)
+    sim.last_no_of_packets = 4000
+    sim.run_final()
     return sim
 
 
@@ -242,4 +242,33 @@ def simulation_verysimple_vpacket_tracking(config_verysimple, atomic_dataset):
     )
     sim.last_no_of_packets = 4000
     sim.run_final()
+    return sim
+
+
+@pytest.fixture(scope="session")
+def simulation_rpacket_tracking(config_rpacket_tracking, atomic_dataset):
+    """
+    Creating a simulation object using a simple configuration
+
+    Parameters
+    ----------
+    config_verysimple_rpacket_tracking : tardis.io.configuration.config_reader.Configuration
+    atomic_dataset : AtomData
+
+    Returns
+    -------
+    simulation object with track_rpacket enabled
+    """
+    config_rpacket_tracking.montecarlo.iterations = 3
+    config_rpacket_tracking.montecarlo.no_of_packets = 4000
+    config_rpacket_tracking.montecarlo.last_no_of_packets = -1
+
+    config_rpacket_tracking.montecarlo.tracking.track_rpacket = True
+
+    atomic_data = deepcopy(atomic_dataset)
+    sim = run_tardis(
+        config_rpacket_tracking,
+        atom_data=atomic_data,
+        show_convergence_plots=False,
+    )
     return sim

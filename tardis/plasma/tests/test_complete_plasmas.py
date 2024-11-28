@@ -136,20 +136,22 @@ class TestPlasma:
     scalars_properties = ["time_explosion", "link_t_rad_t_electron"]
 
     @pytest.fixture(scope="class")
-    def chianti_he_db_fpath(self, tardis_ref_path):
-        return (tardis_ref_path / "atom_data" / "chianti_He.h5").absolute()
+    def chianti_he_db_fpath(self, tardis_regression_path):
+        return (
+            tardis_regression_path / "atom_data" / "chianti_He.h5"
+        ).absolute()
 
     @pytest.fixture(scope="class", params=CONFIG_LIST, ids=idfn)
     def config(self, request):
         config = Configuration.from_yaml(PLASMA_CONFIG_FPATH)
         hash_string = ""
         for prop, value in request.param.items():
-            hash_string = "_".join((hash_string, prop))
+            hash_string = f"{hash_string}_{prop}"
             if prop == "nlte":
                 for nlte_prop, nlte_value in request.param[prop].items():
                     config.plasma.nlte[nlte_prop] = nlte_value
                     if nlte_prop != "species":
-                        hash_string = "_".join((hash_string, nlte_prop))
+                        hash_string = f"{hash_string}_{nlte_prop}"
             else:
                 config.plasma[prop] = value
                 hash_string = "_".join((hash_string, str(value)))
@@ -167,8 +169,11 @@ class TestPlasma:
     ):
         config["atom_data"] = str(chianti_he_db_fpath)
         sim = Simulation.from_config(config)
-        self.regression_data.sync_hdf_store(sim.plasma, update_fname=False)
-        return sim.plasma
+        data = self.regression_data.sync_hdf_store(
+            sim.plasma, update_fname=False
+        )
+        yield sim.plasma
+        data.close()
 
     @pytest.mark.parametrize("attr", combined_properties)
     def test_plasma_properties(self, plasma, attr):

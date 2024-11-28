@@ -23,8 +23,8 @@ jobs:
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v3
         with:
-          config: cliff.toml
-          args: --verbose
+          config: pyproject.toml
+          args: --verbose --tag ${{ github.event.release.tag_name }}
         env:
           OUTPUT: CHANGELOG.md
 

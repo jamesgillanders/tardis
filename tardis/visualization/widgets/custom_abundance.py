@@ -11,7 +11,7 @@ from radioactivedecay.utils import Z_DICT, elem_to_Z
 from pathlib import Path
 
 import tardis
-from tardis.io.model.readers.generic_readers import read_uniform_abundances
+from tardis.io.model.readers.generic_readers import read_uniform_mass_fractions
 from tardis.util.base import (
     quantity_linspace,
     is_valid_nuclide_or_elem,
@@ -27,7 +27,7 @@ from tardis.io.atom_data.base import AtomData
 from tardis.io.configuration.config_validator import validate_dict
 from tardis.io.model.readers.csvy import load_csvy
 from tardis.io.model.readers.csvy import (
-    parse_csv_abundances,
+    parse_csv_mass_fractions,
 )
 from tardis.util.base import atomic_number2element_symbol, quantity_linspace
 from tardis.visualization.tools.convergence_plot import transition_colors
@@ -156,11 +156,11 @@ class CustomAbundanceWidgetData:
 
         if hasattr(csvy_model_config, "abundance"):
             abundances_section = csvy_model_config.abundance
-            abundance, isotope_abundance = read_uniform_abundances(
+            abundance, isotope_abundance = read_uniform_mass_fractions(
                 abundances_section, no_of_shells
             )
         else:
-            _, abundance, isotope_abundance = parse_csv_abundances(
+            _, abundance, isotope_abundance = parse_csv_mass_fractions(
                 csvy_model_data
             )
             abundance = abundance.loc[:, 1:]
@@ -175,9 +175,9 @@ class CustomAbundanceWidgetData:
 
         # Combine elements and isotopes to one DataFrame
         abundance["mass_number"] = ""
-        abundance.set_index("mass_number", append=True, inplace=True)
+        abundance = abundance.set_index("mass_number", append=True)
         abundance = pd.concat([abundance, isotope_abundance])
-        abundance.sort_index(inplace=True)
+        abundance = abundance.sort_index()
 
         return cls(
             density_t_0=time_0,
@@ -222,9 +222,9 @@ class CustomAbundanceWidgetData:
 
         # Combine elements and isotopes to one DataFrame
         abundance["mass_number"] = ""
-        abundance.set_index("mass_number", append=True, inplace=True)
+        abundance = abundance.set_index("mass_number", append=True)
         abundance = pd.concat([abundance, isotopic_mass_fraction])
-        abundance.sort_index(inplace=True)
+        abundance = abundance.sort_index()
 
         return cls(
             density_t_0=density_t_0,
@@ -259,7 +259,7 @@ class CustomAbundanceWidgetData:
         velocity = np.append(v_inner, v_outer[len(v_outer) - 1]) * u.cm / u.s
 
         abundance["mass_number"] = ""
-        abundance.set_index("mass_number", append=True, inplace=True)
+        abundance = abundance.set_index("mass_number", append=True)
 
         return cls(
             density_t_0=density_t_0,
@@ -288,9 +288,9 @@ class CustomAbundanceWidgetData:
 
         # integrate element and isotope to one DataFrame
         abundance["mass_number"] = ""
-        abundance.set_index("mass_number", append=True, inplace=True)
+        abundance = abundance.set_index("mass_number", append=True)
         abundance = pd.concat([abundance, isotope_abundance])
-        abundance.sort_index(inplace=True)
+        abundance = abundance.sort_index()
 
         velocity = sim.simulation_state.velocity
         density_t_0 = sim.simulation_state.time_explosion
@@ -787,7 +787,9 @@ class CustomAbundanceWidget:
         if end_index < len(v_vals) and np.isclose(v_vals[end_index], v_end):
             # New shell will overwrite the original shell that ends at v_end.
             v_vals = np.delete(v_vals, end_index)
-            self.data.abundance.drop(max(0, end_index - 1), 1, inplace=True)
+            self.data.abundance = self.data.abundance.drop(
+                max(0, end_index - 1), 1
+            )
 
         # Insert new velocities calculate new densities according
         # to new velocities through interpolation.
@@ -807,10 +809,9 @@ class CustomAbundanceWidget:
         # Change abundances after adding new shell.
         if start_index != end_index:
             self.data.abundance.insert(start_index, "", new_shell_abundances)
-            self.data.abundance.drop(
+            self.data.abundance = self.data.abundance.drop(
                 self.data.abundance.iloc[:, start_index : end_index - 1],
                 1,
-                inplace=True,
             )
         else:
             if start_index == 0:
@@ -1046,7 +1047,7 @@ class CustomAbundanceWidget:
             z = nuc.Z
             self.data.abundance.loc[(z, mass_no), :] = 0
 
-        self.data.abundance.sort_index(inplace=True)
+        self.data.abundance = self.data.abundance.sort_index()
 
         # Add new BoundedFloatText control and Checkbox control.
         item = ipw.BoundedFloatText(min=0, max=1, step=0.01)
@@ -1466,7 +1467,7 @@ class CustomAbundanceWidget:
             first_row = [0] * self.no_of_elements
             data.loc[-1] = first_row
             data.index += 1  # shifting index
-            data.sort_index(inplace=True)
+            data = data.sort_index()
 
             formatted_v = pd.Series(self.data.velocity.value).apply(
                 lambda x: "%.3e" % x

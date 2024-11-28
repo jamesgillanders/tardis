@@ -1,10 +1,9 @@
-import numpy as np
-
 from pathlib import Path
 
+import numpy as np
 from pytest import fixture
-from astropy import units as u
-from tardis.io.model.cmfgen import read_cmfgen_model
+
+from tardis.io.model.readers.cmfgen import read_cmfgen_model
 
 MODEL_DATA_PATH = Path(__file__).parent / "data"
 

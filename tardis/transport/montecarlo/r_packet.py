@@ -1,18 +1,15 @@
 from enum import IntEnum
 
 import numpy as np
-import pandas as pd
-from numba import int64, float64, njit, objmode
+from numba import float64, int64, njit, objmode
 from numba.experimental import jitclass
 
-from tardis.transport.montecarlo import (
-    njit_dict_no_parallel,
-)
 from tardis.transport.frame_transformations import (
     get_doppler_factor,
 )
-from tardis.transport.montecarlo import numba_config as nc
-from tardis.transport.montecarlo import njit_dict_no_parallel
+from tardis.transport.montecarlo import (
+    njit_dict_no_parallel,
+)
 
 
 class InteractionType(IntEnum):
@@ -41,6 +38,7 @@ rpacket_spec = [
     ("index", int64),
     ("last_interaction_type", int64),
     ("last_interaction_in_nu", float64),
+    ("last_interaction_in_r", float64),
     ("last_line_interaction_in_id", int64),
     ("last_line_interaction_out_id", int64),
     ("last_line_interaction_shell_id", int64),
@@ -48,7 +46,7 @@ rpacket_spec = [
 
 
 @jitclass(rpacket_spec)
-class RPacket(object):
+class RPacket:
     def __init__(self, r, mu, nu, energy, seed, index=0):
         self.r = r
         self.mu = mu
@@ -60,6 +58,7 @@ class RPacket(object):
         self.index = index
         self.last_interaction_type = -1
         self.last_interaction_in_nu = 0.0
+        self.last_interaction_in_r = 0.0
         self.last_line_interaction_in_id = -1
         self.last_line_interaction_out_id = -1
         self.last_line_interaction_shell_id = -1

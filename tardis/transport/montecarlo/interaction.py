@@ -1,7 +1,13 @@
 import numpy as np
 from numba import njit
 
+import tardis.transport.montecarlo.configuration.montecarlo_globals as montecarlo_globals
 from tardis import constants as const
+from tardis.transport.frame_transformations import (
+    angle_aberration_CMF_to_LF,
+    get_doppler_factor,
+    get_inverse_doppler_factor,
+)
 from tardis.transport.montecarlo import njit_dict_no_parallel
 from tardis.transport.montecarlo.macro_atom import (
     MacroAtomTransitionType,
@@ -14,11 +20,6 @@ from tardis.transport.montecarlo.r_packet import (
     PacketStatus,
 )
 from tardis.transport.montecarlo.utils import get_random_mu
-from tardis.transport.frame_transformations import (
-    angle_aberration_CMF_to_LF,
-    get_doppler_factor,
-    get_inverse_doppler_factor,
-)
 
 K_B = const.k_B.cgs.value
 H = const.h.cgs.value
@@ -147,7 +148,6 @@ def continuum_event(
     chi_ff,
     chi_bf_contributions,
     current_continua,
-    continuum_processes_enabled,
     enable_full_relativity,
 ):
     """
@@ -189,7 +189,6 @@ def continuum_event(
         r_packet,
         time_explosion,
         opacity_state,
-        continuum_processes_enabled,
         enable_full_relativity,
     )
 
@@ -200,7 +199,6 @@ def macro_atom_event(
     r_packet,
     time_explosion,
     opacity_state,
-    continuum_processes_enabled,
     enable_full_relativity,
 ):
     """
@@ -218,7 +216,7 @@ def macro_atom_event(
     )
 
     if (
-        continuum_processes_enabled
+        montecarlo_globals.CONTINUUM_PROCESSES_ENABLED
         and transition_type == MacroAtomTransitionType.FF_EMISSION
     ):
         free_free_emission(
@@ -226,7 +224,7 @@ def macro_atom_event(
         )
 
     elif (
-        continuum_processes_enabled
+        montecarlo_globals.CONTINUUM_PROCESSES_ENABLED
         and transition_type == MacroAtomTransitionType.BF_EMISSION
     ):
         bound_free_emission(
@@ -237,7 +235,7 @@ def macro_atom_event(
             enable_full_relativity,
         )
     elif (
-        continuum_processes_enabled
+        montecarlo_globals.CONTINUUM_PROCESSES_ENABLED
         and transition_type == MacroAtomTransitionType.BF_COOLING
     ):
         bf_cooling(
@@ -245,7 +243,7 @@ def macro_atom_event(
         )
 
     elif (
-        continuum_processes_enabled
+        montecarlo_globals.CONTINUUM_PROCESSES_ENABLED
         and transition_type == MacroAtomTransitionType.ADIABATIC_COOLING
     ):
         adiabatic_cooling(r_packet)
@@ -427,7 +425,6 @@ def line_scatter(
     time_explosion,
     line_interaction_type,
     opacity_state,
-    continuum_processes_enabled,
     enable_full_relativity,
 ):
     """
@@ -471,7 +468,6 @@ def line_scatter(
             r_packet,
             time_explosion,
             opacity_state,
-            continuum_processes_enabled,
             enable_full_relativity,
         )
 
@@ -496,6 +492,7 @@ def line_emission(
     """
     r_packet.last_line_interaction_out_id = emission_line_id
     r_packet.last_line_interaction_shell_id = r_packet.current_shell_id
+    r_packet.last_interaction_in_r = r_packet.r
 
     if emission_line_id != r_packet.next_line_id:
         pass

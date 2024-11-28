@@ -1,10 +1,8 @@
-import os
-import pytest
 import numpy as np
-import pandas as pd
+import pytest
+
 import tardis.transport.montecarlo.vpacket as vpacket
 from tardis import constants as const
-
 from tardis.transport.frame_transformations import (
     get_doppler_factor,
 )
@@ -60,7 +58,6 @@ def test_trace_vpacket_within_shell(
         verysimple_time_explosion,
         verysimple_opacity_state,
         enable_full_relativity=False,
-        continuum_processes_enabled=False,
     )
 
     npt.assert_almost_equal(tau_trace_combined, 8164850.891288479)
@@ -91,7 +88,6 @@ def test_trace_vpacket(
         10.0,
         0.0,
         enable_full_relativity=False,
-        continuum_processes_enabled=False,
     )
 
     npt.assert_almost_equal(tau_trace_combined, 8164850.891288479)
@@ -130,7 +126,6 @@ def test_trace_vpacket_volley(
         enable_full_relativity=False,
         tau_russian=10.0,
         survival_probability=0.0,
-        continuum_processes_enabled=False,
     )
 
 
@@ -161,5 +156,4 @@ def test_trace_bad_vpacket(
         10.0,
         0.0,
         enable_full_relativity=False,
-        continuum_processes_enabled=False,
     )

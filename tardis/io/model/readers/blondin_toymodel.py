@@ -28,7 +28,7 @@ def read_blondin_toymodel(fname):
     blondin_csv : pandas.DataFrame
         DataFrame containing the csv part of the toymodel
     """
-    with open(fname, "r") as fh:
+    with open(fname) as fh:
         for line in fh:
             if line.startswith("#idx"):
                 break
@@ -52,7 +52,7 @@ def read_blondin_toymodel(fname):
         header=None,
         names=columns,
     )
-    raw_blondin_csv.set_index("idx", inplace=True)
+    raw_blondin_csv = raw_blondin_csv.set_index("idx")
 
     blondin_csv = raw_blondin_csv.loc[
         :,
@@ -76,7 +76,7 @@ def read_blondin_toymodel(fname):
     }
     rename_col_dict.update({item: item[2:] for item in blondin_csv.columns[3:]})
     rename_col_dict["X_56Ni0"] = "Ni56"
-    blondin_csv.rename(columns=rename_col_dict, inplace=True)
+    blondin_csv = blondin_csv.rename(columns=rename_col_dict)
     blondin_csv.iloc[:, 3:] = blondin_csv.iloc[:, 3:].divide(
         blondin_csv.iloc[:, 3:].sum(axis=1), axis=0
     )
@@ -91,7 +91,7 @@ def read_blondin_toymodel(fname):
     )
     blondin_csv["velocity"] = new_velocities
 
-    with open(fname, "r") as fh:
+    with open(fname) as fh:
         t0_string = T0_PATTERN.findall(fh.read())[0]
 
     t0 = parse_quantity(t0_string.replace("DAYS", "day"))

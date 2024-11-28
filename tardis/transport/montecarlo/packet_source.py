@@ -1,13 +1,14 @@
 import abc
 
-import numpy as np
 import numexpr as ne
+import numpy as np
+from astropy import units as u
+
 from tardis import constants as const
+from tardis.io.util import HDFWriterMixin
 from tardis.transport.montecarlo.packet_collections import (
     PacketCollection,
 )
-from tardis.io.util import HDFWriterMixin
-from astropy import units as u
 
 
 class BasePacketSource(abc.ABC):
@@ -226,8 +227,8 @@ class BlackBodySimpleSource(BasePacketSource, HDFWriterMixin):
 
     def create_packet_mus(self, no_of_packets):
         """
-        Create zero-limb-darkening packet :math:`\mu` distributed
-        according to :math:`\\mu=\\sqrt{z}, z \isin [0, 1]`
+        Create zero-limb-darkening packet :math:`\\mu` distributed
+        according to :math:`\\mu=\\sqrt{z}, z \\isin [0, 1]`
 
         Parameters
         ----------
@@ -239,7 +240,6 @@ class BlackBodySimpleSource(BasePacketSource, HDFWriterMixin):
         Directions for packets
             numpy.ndarray
         """
-
         # For testing purposes
         if self.legacy_mode_enabled:
             return np.sqrt(np.random.random(no_of_packets))
@@ -269,7 +269,6 @@ class BlackBodySimpleSource(BasePacketSource, HDFWriterMixin):
 
         Parameters
         ----------
-
         luminosity : u.Quantity
 
         """
@@ -340,7 +339,7 @@ class BlackBodySimpleSourceRelativistic(BlackBodySimpleSource, HDFWriterMixin):
 
     def create_packet_mus(self, no_of_packets):
         """
-        Create zero-limb-darkening packet :math:`\mu^\prime` distributed
+        Create zero-limb-darkening packet :math:`\\mu^\\prime` distributed
         according to :math:`\\mu^\\prime=2 \\frac{\\mu^\\prime + \\beta}{2 \\beta + 1}`.
         The complicated distribution is due to the fact that the inner boundary
         on which the packets are initialized is not comoving with the material.

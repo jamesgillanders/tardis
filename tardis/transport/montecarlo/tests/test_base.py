@@ -1,10 +1,6 @@
-import os
 import pandas as pd
-import numpy as np
 import pytest
-from astropy import units as u
 from numpy.testing import assert_almost_equal
-from pathlib import Path
 
 ###
 # Save and Load
@@ -42,17 +38,12 @@ transport_state_properties = [
     "output_energy",
     "nu_bar_estimator",
     "j_estimator",
-    "montecarlo_virtual_luminosity",
-    "packet_luminosity",
-    # These are nested properties that should be tested differently
-    # "spectrum",
-    # "spectrum_virtual",
-    # "spectrum_reabsorbed",
     # This is a scalar and should be tested differently
     # "time_of_simulation",
     "emitted_packet_mask",
     "last_interaction_type",
     "last_interaction_in_nu",
+    "last_interaction_in_r",
     "last_line_interaction_out_id",
     "last_line_interaction_in_id",
     "last_line_interaction_shell_id",
@@ -61,6 +52,7 @@ transport_state_properties = [
     "virt_packet_initial_rs",
     "virt_packet_initial_mus",
     "virt_packet_last_interaction_in_nu",
+    "virt_packet_last_interaction_in_r",
     "virt_packet_last_interaction_type",
     "virt_packet_last_line_interaction_in_id",
     "virt_packet_last_line_interaction_out_id",

@@ -1,6 +1,7 @@
-import pytest
-import numpy.testing as npt
 import numpy as np
+import numpy.testing as npt
+import pytest
+
 import tardis.transport.montecarlo.interaction as interaction
 from tardis.transport.montecarlo.numba_interface import (
     LineInteractionType,
@@ -48,7 +49,6 @@ def test_line_scatter(
         time_explosion,
         line_interaction_type,
         verysimple_opacity_state,
-        continuum_processes_enabled=False,
         enable_full_relativity=False,
     )
 
